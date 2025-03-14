@@ -30,7 +30,84 @@ class Solution:
         return -max_heap[0]
 
     """
-    方法3：Quick Select (第41个test过不了)
+    方法3：Quick Select 霍尔分区法 （采用双指针分区，效率高）    快选记这个！
+    首先进行问题转换：
+        例如大小为n = 5的数组：[1, 2, 3, 4, 5]
+        找第k = 2大的数 -> 找第(5 - 2)小的数 （0-index）
+        即找第k大的数相当于找排序后下标为(n - k)的数。
+        所以在下标转换后，我们在算法中用的下标，比如返回的j，能直接和转换后的k（k = n - k）进行比较，因为都是0-index了！
+    
+    重点：和卢默分区的区别
+        1. 卢默分区完成一次后，保证了pivot左边的数严格小于pivot，右边的数严格大于pivot，所以pivot的下标就是完整排序后真正的下标。
+           所以当返回的下标 == k时，那么返回的pivot_idx就是答案。
+        2. 霍尔分区完成一次后，返回j，仅能保证左半部分[left,j] <= pivot，右半部分[j + 1,right] >= pivot，而不能保证下标j处的数
+           就在完整排序后的下标j。因为在while循环中，我们把 >= pivot的数往右放， <= pivot的数往左移，没有严格小于或等于，这就造成了
+           j不是真实下标。例如，如果数组中有重复的数，且刚好都等于pivot，那么重复数在分区后可能会被分到了左右两边，最后返回的j也就不是真正的下标。
+           总结，霍尔分区返回j后，只能保证：[left, j] <= pivot, [j + 1, right] >= pivot
+           
+    所以，我们得到返回的j时，分两种情况：
+        1. k > j:
+            我们在 [j + 1, right]找。
+                通过个数想（即1-index）：目前左半部分共(j-left+1)个数，我们要找排序后下标为k的数，即要找第k+1个数。
+                此时k > j，
+                    两边同时+1得到 -> k + 1 > j + 1
+                    目前左半部分[left, j]共(j-left+1) = j + 1 - left个数，其中left >= 0
+                    则k + 1 > j + 1 >= j + 1 - left
+                    最终我们得到k + 1 > j + 1 - left
+                说明左区间[left, j]的个数比我们要找的第k+1个数少，所以要找的一定在这个区间右边（即可以直接排除整个[left, j]）。 
+                （就算我们要找的数为重复数，在左右区间都存在，那么也能把[left, j]去掉，因为这个重复数在右区间也有，在真正排序后
+                下标k也一定大于j！）
+        2. k <= j:
+            我们在[left, j]找。为什么要包含j呢？
+                因为左半部分[left, j] <= pivot，并不像卢默分区后严格小于，所以真正排序后下标k的数也可能就是j。所以我们要把j包含上。
+                
+    
+    补充：为什么下面的写法（把if反过来）不行？
+        if k < j:
+                return quick_select(left, j - 1, k)
+            else:  # k >= j
+                return quick_select(j, right, k)
+        
+        因为，[left, j] <= pivot，如果k < j，并不能排除下标j，因为上面解释过，左半部分没有被真正排序，所以下标j也有可能是
+        完整排序后的下标k！
+    """
+    def findKthLargest2(self, nums: List[int], k: int) -> int:
+        def partition(left, right):
+            pivot = nums[left]  # 随便选一个pivot，不需要记录index，只看值即可
+            i, j = left - 1, right + 1  # 初始化ij双指针，指向当前区间[l,r]的左右两侧，即l - 1和r + 1
+            while i < j:
+                # i从左往右找第一个 >= pivot的下标
+                while True:
+                    i += 1
+                    if nums[i] >= pivot:
+                        break
+                # j从右往左找第一个 <= pivot的下标
+                while True:
+                    j -= 1
+                    if nums[j] <= pivot:
+                        break
+                # 如果此时i < j，则进行交换，使得大的到右边去，小的到左边去
+                if i < j:
+                    nums[i], nums[j] = nums[j], nums[i]
+            # 返回时，j是第一个小于等于pivot的数，所以有[left, j] <= pivot, [j + 1, right] >= pivot。霍尔分区和卢默分区不同的是这里j不一定就是最终排序后正确的下标！
+            return j  # 按习惯返回j就行，i的话搞不清invariant，所以记住返回j即可
+
+        def quick_select(left, right):
+            if left == right:
+                return nums[left]
+            j = partition(left, right)
+            # 由于霍尔分区返回的j不一定是排序后真正的下标，所以，j == k时nums[k]不一定就是下标k的数！所以我们只能按照[left, j] <= pivot, [j + 1, right] >= pivot这个invariant去做！
+            if k > j:  # k > j时能直接排除掉左区间[left, j]，见上面解释
+                return quick_select(j + 1, right)
+            else:  # k <= j
+                return quick_select(left, j)
+
+        n = len(nums)
+        k = n - k
+        return quick_select(0, n - 1)
+
+    """
+    方法4：Quick Select 卢默分区法 (第41个test过不了，因为卢默分区法是单指针遍历，效率低！)
     设len(nums) = n，则找第k大的就是找第(n-k)小的元素，下面的描述指找第k小的元素
     注意:转换成找第(n-k)小的元素后，相当于implicitly用了0-based index，例如：
     [1,2,3,4,5,6]中第2大的为5，转换后为第(6-2)=4小的，其实这个4是0-based index，
