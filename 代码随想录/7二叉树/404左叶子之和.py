@@ -27,17 +27,34 @@ class Solution:
         return traverse(root, False)
 
     """
+    也可以用nonlocal ans，前中后序都可以（if is_left那句放到两个traverse的前面，中间，后面都可以！）
+    """
+    def sumOfLeftLeaves1(self, root: Optional[TreeNode]) -> int:
+        def traverse(root, is_left):
+            if root is None:
+                return
+            nonlocal ans
+            traverse(root.left, True)
+            if is_left and root.left is None and root.right is None:
+                ans += root.val
+            traverse(root.right, False)
+
+        ans = 0
+        traverse(root, False)
+        return ans
+
+    """
     不用flag的后序遍历写法（不用看）：普通后序只加上了一个在中时判断左子树是否为叶子。这样即使是叶子节点也返回0，只有包含左叶子的节点才会把
     left_sum设为左叶子的值！
     """
-    def sumOfLeftLeaves1(self, root: Optional[TreeNode]) -> int:
+    def sumOfLeftLeaves2(self, root: Optional[TreeNode]) -> int:
         if not root:
             return 0
-        left_sum = self.sumOfLeftLeaves1(root.left)
+        left_sum = self.sumOfLeftLeaves2(root.left)
         # 判断当前节点（左中右的中）的左节点是否为叶子
         if root.left and not root.left.left and not root.left.right:
             left_sum = root.left.val
-        right_sum = self.sumOfLeftLeaves1(root.right)
+        right_sum = self.sumOfLeftLeaves2(root.right)
         # 其实判断放到这也行，因为左右子树都遍历完才return一个值，所以还是算后序遍历！
         return left_sum + right_sum  # 中间节点不算，所以直接返回左右子树的结果之和
 

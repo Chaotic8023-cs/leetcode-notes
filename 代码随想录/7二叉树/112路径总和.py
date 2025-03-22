@@ -30,20 +30,19 @@ class Solution:
         return ans
 
     """
-    后序遍历也可以，不用记，其实中序也行
+    普通遍历也行，没必要使用nonlocal：前中后序都行（if s + root.val == targetSum这个判断放到两个traverse前面，中间和后面都行！）
     """
     def hasPathSum1(self, root: Optional[TreeNode], targetSum: int) -> bool:
-        def traverse(root, curr_sum, target_sum):
-            if not root:
+        def traverse(root, s):
+            if root is None:
                 return False
-            curr_sum += root.val
-            l = traverse(root.left, curr_sum, target_sum)
-            r = traverse(root.right, curr_sum, target_sum)
-            if not root.left and not root.right and curr_sum == targetSum:
+            if s + root.val == targetSum and root.left is None and root.right is None:  # 叶子节点才算路径
                 return True
+            l = traverse(root.left, s + root.val)
+            r = traverse(root.right, s + root.val)
             return l or r
 
-        return traverse(root, 0, targetSum)
+        return traverse(root, 0)
 
 
 

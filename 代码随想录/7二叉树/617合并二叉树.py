@@ -24,13 +24,32 @@ class Solution:
                 val += root1.val
             if root2:
                 val += root2.val
-            merged = TreeNode(val)
+            merged = TreeNode(val)  # 构建新节点
             # 递归构建左右子树
             merged.left = traverse(root1.left if root1 else None, root2.left if root2 else None)
             merged.right = traverse(root1.right if root1 else None, root2.right if root2 else None)
             return merged
 
         return traverse(root1, root2)
+
+    """
+    方法2：以root1为基础，直接merge到root1上。这样会直接改变原来的root1，如果题目要求原来的root1和root2都不能动，则使用上面的方法。
+    """
+    def mergeTrees1(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> Optional[TreeNode]:
+        if root1 is None and root2 is None:
+            return None
+        # 任一root为空，则直接由另一个root代替
+        if root1 is None:
+            return root2
+        elif root2 is None:
+            return root1
+        # 此时root1和root2都不是None
+        root1.val += root2.val  # 将root2的值merge到root1上
+        # 递归构建合并root1的左右子树
+        root1.left = self.mergeTrees(root1.left, root2.left)
+        root1.right = self.mergeTrees(root1.right, root2.right)
+        # 返回合并后的root1
+        return root1
 
 
 
