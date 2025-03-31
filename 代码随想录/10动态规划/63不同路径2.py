@@ -4,25 +4,26 @@ from typing import *
 """
 1. dp数组下标含义：dp[i][j]为到达坐标(i, j)的不同路径的个数
 2. 递推公式：同62不同路径，但是要判断是否左边和上边有障碍物，有的话对应的方向就为0
-3. 初始化：重点！此题起点和终点上都可能有障碍物，所以一开始全部先初始化成0。然后我们初始化第一行和第一列，此时如果中间有障碍物则它后边的
+3. 初始化：重点！此题起点和终点上都可能有障碍物，所以一开始全部先初始化成0。然后我们初始化第一行和第一列，此时如果遇到第一个障碍物则它后边的
     所有格子都为0
 4. 遍历顺序：同62不同路径
 """
 class Solution:
     def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
         m, n = len(obstacleGrid), len(obstacleGrid[0])
-        # 初始化：如果中间有障碍物则后面全部为0
+        # 起点或终点就是石头，则直接返回0
+        if obstacleGrid[0][0] == 1 or obstacleGrid[m - 1][n - 1] == 1:
+            return 0
         dp = [[0] * n for _ in range(m)]
+        # 初始化：第一行和第一列中，到第一个石头前全是1，剩下位置都是0
         for i in range(m):
-            if obstacleGrid[i][0] == 0:
-                dp[i][0] = 1
-            elif obstacleGrid[i][0] == 1:
+            if obstacleGrid[i][0] == 1:
                 break
+            dp[i][0] = 1
         for j in range(n):
-            if obstacleGrid[0][j] == 0:
-                dp[0][j] = 1
-            elif obstacleGrid[0][j] == 1:
+            if obstacleGrid[0][j] == 1:
                 break
+            dp[0][j] = 1
         # 遍历
         for i in range(1, m):
             for j in range(1, n):
