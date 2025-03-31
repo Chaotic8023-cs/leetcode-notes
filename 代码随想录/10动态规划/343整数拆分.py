@@ -20,6 +20,7 @@ class Solution:
             for j in range(1, i):
                 # 1. 直接拆成两个：j * (i - j)，或拆成j和(i - j)的拆分（即dp[i - j]）
                 dp[i] = max(dp[i], j * (i - j), j * dp[i - j])  # 注意，max中要有dp[i]，因为dp[i]一直在更新！
+                # 因为是对称的，所以写成 dp[i] = max(dp[i], j * (i - j), dp[j] * (i - j)) 也可以！即拆j不拆(i - j) 与 不拆j拆(i - j)是等效的！
         return dp[n]
 
 
