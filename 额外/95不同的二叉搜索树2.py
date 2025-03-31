@@ -25,11 +25,11 @@ class Solution:
             # 此时枚举不同的根节点，对于每个根节点它的左右子树的所有可能的情况可以递归获得，然后枚举所有可能的左右子树的组合（笛卡尔积），和当前根节点构成一个树，加入到ans中
             for root in range(i, j + 1):  # 根节点可能是[i,j]中的任何一个
                 # 注意，generate的参数是左闭右闭，所以当根节点是root时，左边就是[i, root - 1]，右边就是[root + 1, j]
-                left = generate(i, root - 1)
-                right = generate(root + 1, j)
-                for l in left:
-                    for r in right:
-                        ans.append(TreeNode(root, l, r))
+                l_trees = generate(i, root - 1)
+                r_trees = generate(root + 1, j)
+                for lt in l_trees:
+                    for rt in r_trees:
+                        ans.append(TreeNode(root, lt, rt))
             return ans
 
         return generate(1, n)
