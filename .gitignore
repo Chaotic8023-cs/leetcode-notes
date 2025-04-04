@@ -29,3 +29,5 @@ out/
 *.tmp
 *.swp
 *.swo
+
+test.py
