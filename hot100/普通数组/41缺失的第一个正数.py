@@ -25,13 +25,31 @@ class Solution:
     对应的数字，且如果有重复元素，这个条件会造成无限循环(比如[1,1]，遍历到下标1时，就会和前面一个1一直交换下去！)。
     所以我们用的是nums[nums[i] - 1] != nums[i]，即如果当前元素正确的位置已经是当前元素了，则停止交换，解决了重复元素问题，同时保证了如果新交换
     过来的元素还需要交换就能一直交换！
-
     """
-    def firstMissingPositive(self, nums: List[int]) -> int:
+    def firstMissingPositive1(self, nums: List[int]) -> int:
         n = len(nums)
         for i in range(n):
             while 1 <= nums[i] <= n and nums[nums[i] - 1] != nums[i]:
                 nums[nums[i] - 1], nums[i] = nums[i], nums[nums[i] - 1]
+        for i in range(n):
+            if nums[i] != i + 1:
+                return i + 1
+        return n + 1
+
+    """
+    使用传统swap代替pythonic交换，逻辑更清楚，而且不会因为pythonic交换顺序写的不对而造成问题！
+    记这个！
+    """
+    def firstMissingPositive(self, nums: List[int]) -> int:
+        def swap(i, j):
+            temp = nums[i]
+            nums[i] = nums[j]
+            nums[j] = temp
+
+        n = len(nums)
+        for i in range(n):
+            while 1 <= nums[i] <= n and nums[nums[i] - 1] != nums[i]:
+                swap(i, nums[i] - 1)
         for i in range(n):
             if nums[i] != i + 1:
                 return i + 1
