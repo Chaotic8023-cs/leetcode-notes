@@ -33,9 +33,27 @@ class Solution:
             for j in range(i + 1, n):  # j > i：j严格大于i，因为我们已经把i == j的情况初始化了
                 if s[i] == s[j]:
                     dp[i][j] = dp[i + 1][j - 1] + 2  # 即中间部分的最大长度加上两头两个字母
+                    # 对于j = i + 1的情况，即两个字母挨着，dp[i + 1][j - 1]中左就大于右了，不符合dp数组下标含义，但是因为初始化都是0，所以刚好满足这里：dp[i + 1][j - 1] = 0
                 else:
                     dp[i][j] = max(dp[i + 1][j], dp[i][j - 1])  # 两头两个字母中的一个往中间退一格
         # 最后返回[0,n-1]范围中的最长回文子序列的长度
+        return dp[0][n - 1]
+
+    """
+    其实我们也可以不初始化对角线，这样遍历的时候j就得从i开始，加入i == j的情况！
+    """
+    def longestPalindromeSubseq1(self, s: str) -> int:
+        n = len(s)
+        dp = [[0] * n for _ in range(n)]
+        for i in range(n - 1, -1, -1):
+            for j in range(i, n):  # j从i开始，考虑i == j的情况，即一个字母（对角线）
+                if s[i] == s[j]:
+                    if j - i == 0:  # i == j，即对角线，一个字母的情况
+                        dp[i][j] = 1
+                    else:
+                        dp[i][j] = dp[i + 1][j - 1] + 2
+                else:
+                    dp[i][j] = max(dp[i + 1][j], dp[i][j - 1])
         return dp[0][n - 1]
 
 
