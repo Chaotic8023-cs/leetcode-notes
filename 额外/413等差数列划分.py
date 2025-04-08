@@ -11,7 +11,7 @@ class Solution:
         n = len(nums)
         i, j = 0, 1  # 窗口的左右指针
         ans = 0
-        while j < n:
+        while j < n:  # 条件为j < n而不是i < n是因为必须有j才有第一个diff！
             # 统计前两个元素的差作为当前等差数列的差
             diff = nums[j] - nums[i]
             j += 1
