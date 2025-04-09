@@ -21,3 +21,4 @@ class Solution:
         所以最后返回left - 1！
         """
         return left - 1
+
