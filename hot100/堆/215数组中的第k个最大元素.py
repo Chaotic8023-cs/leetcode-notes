@@ -70,6 +70,12 @@ class Solution:
         
         因为，[left, j] <= pivot，如果k < j，并不能排除下标j，因为上面解释过，左半部分没有被真正排序，所以下标j也有可能是
         完整排序后的下标k！
+        
+    补充：为什么初始化时i = left - 1，j = right + 1，不能写成i = left，j = right？
+        如果 nums[left] 就已经是一个不小于 pivot 的值，则第一个 while True 不会执行 i += 1，i 不会移动；
+        同理，nums[right] 若已经不大于 pivot，j 也不会减小；
+        这就可能导致死循环或逻辑错误，比如当 nums[i] == nums[j] == pivot 时，两个指针根本不移动，而 i < j 条件仍满足，于是会 重复交换同一个位置的值，造成死循环。
+        我们希望两个指针即使都等于pivot时也各自更新一次好走出while循环，所以初始化成left-1和right+1这样每次先更新指针再判断，就不会死循环！
     """
     def findKthLargest2(self, nums: List[int], k: int) -> int:
         def partition(left, right):
