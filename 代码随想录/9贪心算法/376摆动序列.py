@@ -20,8 +20,6 @@ from typing import *
 class Solution:
     def wiggleMaxLength(self, nums: List[int]) -> int:
         n = len(nums)
-        if n < 2:
-            return n
         up, down = 1, 1
         for i in range(n - 1):  # 只需要看数组中两两之间的差值，所以用 for i in range(1, n)然后比较nums[i]和nums[i - 1]也行！
             if nums[i] < nums[i + 1]:
