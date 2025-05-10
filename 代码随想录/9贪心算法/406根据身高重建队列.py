@@ -15,8 +15,8 @@ class Solution:
     """
     def reconstructQueue(self, people: List[List[int]]) -> List[List[int]]:
         ans = []
-        # 排序：身高（x[0]）从大到小，k从小到大（x[1]）
-        for h, k in sorted(people, key=lambda x: (x[0], -x[1]), reverse=True):
+        # 排序：按身高倒排，按k正排
+        for h, k in sorted(people, key=lambda x: (-x[0], x[1])):
             ans.insert(k, [h, k])
         return ans
 
