@@ -11,9 +11,6 @@ from typing import *
 class Solution:
     def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
         m, n = len(obstacleGrid), len(obstacleGrid[0])
-        # 起点或终点就是石头，则直接返回0
-        if obstacleGrid[0][0] == 1 or obstacleGrid[m - 1][n - 1] == 1:
-            return 0
         dp = [[0] * n for _ in range(m)]
         # 初始化：第一行和第一列中，到第一个石头前全是1，剩下位置都是0
         for i in range(m):
