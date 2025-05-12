@@ -6,10 +6,11 @@
 def climb(n, m):
     dp = [0] * (n + 1)  # 1-index
     dp[0] = 1  # 我们一开始站在第0阶，比如m=2我们一次爬两阶到2层，那么递推公式中就是dp[2] += dp[2 - 2]，所以dp[0] = 1也得算一种方法
-    dp[1] = 1  # 爬1阶就一种方法
+    dp[1] = 1  # 爬1阶就一种方法（可忽略，i就从1开始循环）
     for i in range(2, n + 1):
-        for j in range(1, m + 1):
-            dp[i] += dp[i - j]
+        for j in range(1, m + 1):  # 遍历每次能爬的阶数
+            if i - j >= 0:  # 确保i-j为合理下标，即能从 i-j 起步一次爬 j 阶楼梯到 i
+                dp[i] += dp[i - j]
     return dp[n]
 
 """
