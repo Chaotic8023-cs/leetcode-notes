@@ -22,15 +22,14 @@ class Solution:
     def rob(self, root: Optional[TreeNode]) -> int:
         def traverse(root):
             if root is None:  # base case：金钱从0起步
-                return [0, 0]  # [不偷，偷]
+                return 0, 0  # 不偷，偷
             ln, ly = traverse(root.left)
             rn, ry = traverse(root.right)
             not_steal = max(ln, ly) + max(rn, ry)  # 当前节点不偷时，它的子节点可以选择偷也可以选择不偷，而不是必须要偷！
             steal = root.val + ln + rn  # 当前节点偷时，子节点只能不偷
-            return [not_steal, steal]
+            return not_steal, steal
 
-        not_steal, steal = traverse(root)
-        return max(not_steal, steal)
+        return max(traverse(root))
 
 
 
