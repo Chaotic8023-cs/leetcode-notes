@@ -45,6 +45,44 @@ class Solution:
                     ans.append([i, j])
         return ans
 
+    """
+    其实不用marker，visited本身就记录了能不能到！
+    """
+    def pacificAtlantic1(self, heights: List[List[int]]) -> List[List[int]]:
+        def dfs(i, j, visited):
+            visited[i][j] = True
+            for dx, dy in dirs:
+                nx, ny = i + dx, j + dy
+                if 0 <= nx < m and 0 <= ny < n and not visited[nx][ny] and heights[nx][ny] >= heights[i][j]:
+                    dfs(nx, ny, visited)
+
+        m, n = len(heights), len(heights[0])
+        dirs = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+        visited_p = [[False] * n for _ in range(m)]
+        visited_a = [[False] * n for _ in range(m)]
+        # 遍历：从海洋往中间逆流而上，即在grid周长上的每个格子进行dfs
+        for i in range(m):
+            # 太平洋
+            if not visited_p[i][0]:  # 其实不用检查visited，但是检查有助于减少重复计算
+                dfs(i, 0, visited_p)
+            # 大西洋
+            if not visited_a[i][n - 1]:
+                dfs(i, n - 1, visited_a)
+        for j in range(n):
+            # 太平洋
+            if not visited_p[0][j]:
+                dfs(0, j, visited_p)
+            # 大西洋
+            if not visited_a[m - 1][j]:
+                dfs(m - 1, j, visited_a)
+        # 最后只用看太平洋和大西洋都visited了的地方
+        ans = []
+        for i in range(m):
+            for j in range(n):
+                if visited_p[i][j] and visited_a[i][j]:
+                    ans.append([i, j])
+        return ans
+
 
 """
 BFS版
