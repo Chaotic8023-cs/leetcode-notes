@@ -15,8 +15,8 @@ class Solution:
                 if grid[i][j] == 1:
                     for dx, dy in directions:
                         next_x, next_y = i + dx, j + dy
-                        # 检查陆地格子的四周：if 旁边是水 or 旁边是边界 则周长+1
-                        if (0 <= next_x < m and 0 <= next_y < n and grid[next_x][next_y] == 0) or (next_x < 0 or next_x >= m or next_y < 0 or next_y >= n):
+                        # 检查陆地格子的四周：if 旁边是水 or 旁边是边界（越界了） 则周长+1（为什么越界也算：想象grid全是1，那么周长就是全越界的地方！）
+                        if next_x < 0 or next_x >= m or next_y < 0 or next_y >= n or grid[next_x][next_y] == 0:  # 越界 or 0
                             ans += 1
         return ans
 
