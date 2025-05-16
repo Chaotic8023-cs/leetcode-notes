@@ -23,7 +23,7 @@ def main():
                 area[marker_idx] = dfs(grid, i, j, visited, n, m, marker_idx)
                 marker_idx += 1
     # 再遍历grid，看每个位置填海所构成的最大面积
-    ans = max(area.values()) if len(area.values()) > 0 else 0  # 最大面积初始化为所有岛屿的最大面积（如果有岛的话）
+    ans = max(area.values()) if len(area.values()) > 0 else 0  # 最大面积初始化为所有岛屿的最大面积（测试用例中有一个grid只有一个1，那么填海就不会进行，会返回0，所以ans应该初始化为未填海前最大的岛屿面积！）
     dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
     for i in range(n):
         for j in range(m):
