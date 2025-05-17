@@ -50,7 +50,7 @@ def main1():
     # 解题
     def dfs(i, visited):
         visited.add(i)
-        for j in range(n + 1):  # 注意：是1-indexed，所以要用n + 1！
+        for j in range(1, n + 1):  # 注意：节点从1开始！
             if graph[i][j] == 1 and j not in visited:
                 dfs(j, visited)
 
