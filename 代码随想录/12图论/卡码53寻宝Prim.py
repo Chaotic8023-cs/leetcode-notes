@@ -1,3 +1,4 @@
+from math import inf
 # https://kamacoder.com/problempage.php?pid=1053
 
 """
@@ -8,13 +9,12 @@ Prim三部曲：
 """
 def prim(v, e, graph):
     isInTree = [False] * (v + 1)  # 记录当前的生成树，即每个节点是否在树里
-    minDist = [float('inf')] * (v + 1)  # 记录每个节点到当前生成树的距离
+    minDist = [inf] * (v + 1)  # 记录每个节点到当前生成树的距离
     parent = [-1] * (v + 1)  # 用来记录最小生成树的（无向）边，此题中用不到，但是如果要打印出所有边就用得上了。parent[i] = j即ij为一条边
     # Prim算法三部曲
-    for i in range(1, v + 1):  # 每次加入1个节点，一共v个节点[1, v]
+    for _ in range(v):  # 每次加入1个节点，一共要加入v个节点
         # 1. 根据minDist选择距离当前生成树最近的一个节点
-        curr_node = 1  # 因为都用的inf，所以第一次if小于号比较不会成功，所以默认第一个node先加入tree
-        curr_min = float('inf')
+        curr_node, curr_min = 1, inf  # 因为都用的inf，所以第一次if小于号比较不会成功，所以默认第一个node先加入tree
         for n in range(1, v + 1):
             if not isInTree[n] and minDist[n] < curr_min:
                 curr_min = minDist[n]
