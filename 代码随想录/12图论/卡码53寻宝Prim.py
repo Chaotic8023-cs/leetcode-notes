@@ -7,7 +7,7 @@ Prim三部曲：
     2. 最近节点加入生成树
     3. 更新非生成树节点到生成树的距离（即更新minDist数组）
 """
-def prim(v, e, graph):
+def prim(graph, v, e):
     isInTree = [False] * (v + 1)  # 记录当前的生成树，即每个节点是否在树里
     minDist = [inf] * (v + 1)  # 记录每个节点到当前生成树的距离
     parent = [-1] * (v + 1)  # 用来记录最小生成树的（无向）边，此题中用不到，但是如果要打印出所有边就用得上了。parent[i] = j即ij为一条边
@@ -44,7 +44,7 @@ def main():
         graph[i][j] = w
         graph[j][i] = w
     # 解题
-    sum_weights, parent = prim(v, e, graph)
+    sum_weights, parent = prim(graph, v, e)
     # 打印结果
     print(sum_weights)
     # 拓展：打印所有边，parent[i] = j即节点i和节点j有连接
