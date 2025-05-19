@@ -15,9 +15,9 @@ class DisjointSet:
     def union(self, u, v):
         pu, pv = self.find(u), self.find(v)
         if pu == pv:  # 要加入的边两头的节点uv已经在一个set里了，即此边会形成环
-            return True
+            return False
         self.parent[pv] = pu
-        return False
+        return True  # union成功
 
 class Solution:
     """
@@ -26,7 +26,7 @@ class Solution:
     def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
         ds = DisjointSet(len(edges) + 1)  # 因为图中多一条边，所以节点数就是len(edges)，+1因为节点从1开始，下标0相当于不用了
         for u, v in edges:
-            if ds.union(u, v):  # 如果此边形成环，则为冗余边
+            if not ds.union(u, v):  # 如果union失败，即此边形成环，则为冗余边
                 return [u, v]
 
 
