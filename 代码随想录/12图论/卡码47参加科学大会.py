@@ -56,7 +56,7 @@ def reconstruct_path(parent, start, goal):  # 通过parent数组从终点向起�
 
 
 """
-用堆（优先队列）的dijkstra：即aip课上学的：直接记住这个即可！
+用堆（优先队列）的dijkstra：即aip课上学的
 """
 def dijkstra_optimized(n, m, graph, start, goal):
     pq = []
@@ -72,6 +72,29 @@ def dijkstra_optimized(n, m, graph, start, goal):
             if graph[node][v] < inf and (v not in best_g or cost + graph[node][v] < best_g[v]):
                 best_g[v] = cost + graph[node][v]
                 heapq.heappush(pq, (cost + graph[node][v], v, path + [v]))
+    return -1, None
+
+"""
+使用邻接表更好一些：
+v, e = map(int, input().split())
+graph = defaultdict(list)
+for _ in range(e):
+    v1, v2, w = map(int, input().split())
+    graph[v1].append((v2, w))
+"""
+def dijkstra_optimized_1(graph, v, e, start, goal):
+    start_node = (0, start, [start])  # cost, curr_node, path
+    pq = []
+    heapq.heappush(pq, start_node)
+    best_g = {start: 0}
+    while pq:
+        cost, curr, path = heapq.heappop(pq)
+        if curr == goal:
+            return cost, path
+        for n, w in graph[curr]:
+            if n not in best_g or cost + w < best_g[n]:
+                best_g[n] = cost + w
+                heapq.heappush(pq, (cost + w, n, path + [n]))
     return -1, None
 
 
