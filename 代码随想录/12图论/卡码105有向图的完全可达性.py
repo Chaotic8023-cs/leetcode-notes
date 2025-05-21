@@ -4,8 +4,30 @@ from collections import defaultdict
 DFS：从1进行dfs全部遍历一遍，然后看是不是所有节点都遍历到了。
 """
 
-# 使用邻接表 + cnt计数
+# 使用邻接表 + visited计数（比cnt计数方便一些）
 def main():
+    def dfs(curr, g, visited, n, k):
+        visited.add(curr)
+        cnt = 1
+        for n in g[curr]:
+            if n not in visited:
+                cnt += dfs(n, g, visited, n, k)
+        return cnt
+
+    n, k = map(int, input().split())
+    g = defaultdict(list)
+    for _ in range(k):
+        s, t = map(int, input().split())
+        g[s].append(t)
+    visited = set()
+    cnt = dfs(1, g, visited, n, k)
+    if len(visited) == n:
+        print(1)
+    else:
+        print(-1)
+
+# 使用邻接表 + cnt计数
+def main1():
     def dfs(curr, g, visited, n, k):
         visited[curr] = True
         cnt = 1
@@ -43,7 +65,7 @@ def main():
 """
 
 # 使用邻接矩阵 + visited计数
-def main1():
+def main2():
     # 读取数据
     n, k = map(int, input().split())
     graph = [[0] * (n + 1) for _ in range(n + 1)]  # 适应1-index
