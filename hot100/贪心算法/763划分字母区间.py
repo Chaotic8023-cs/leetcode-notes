@@ -27,6 +27,24 @@ class Solution:
             i = j
         return ans
 
+    # 用start记录每次的起始位置，继续用i遍历，这样更方便些
+    def partitionLabels1(self, s: str) -> List[int]:
+        n = len(s)
+        last = {}
+        for i in range(n):
+            last[s[i]] = i
+        ans = []
+        i = 0
+        while i < n:
+            start = i
+            curr_max = last[s[start]]
+            i += 1
+            while i <= curr_max:
+                curr_max = max(curr_max, last[s[i]])
+                i += 1
+            ans.append(i - start)
+        return ans
+
 
 if __name__ == '__main__':
     sol = Solution()
