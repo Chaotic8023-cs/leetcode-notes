@@ -40,15 +40,14 @@ class Solution:
                 # 当前的差
                 diff = nums[i] - nums[j]
                 """
-                1. dp[j][diff]：以j为结尾diff为差的等差子序列长度-1
-                2. 加上元素i：dp[i][diff] = dp[j][diff] + 1
-                3. dp[i][diff]：以i为结尾diff为差的等差子序列长度-1
-                    注意，dp数组中永远都是真实的等差子序列长度-1！
+                同最长递增子序列的思想：
+                    dp[i][diff]：以i为结尾差为diff的等差子序列的最大长度 = max(dp[i][diff], dp[j][diff] + 1)
+                    注意，因为 defaultdict 初始化为0，所以等差序列开头的一个数字没算上，所以dp数组中永远都是真实的等差子序列长度-1！
                 """
-                dp[i][diff] = dp[j][diff] + 1
-                # 每次更新以diff为差的等差序列长度时，就更新一次ans
-                ans = max(ans, dp[i][diff] + 1)
-        return ans
+                dp[i][diff] = max(dp[i][diff], dp[j][diff] + 1)
+                # 每次更新以diff为差的等差序列长度时，就更新一次ans，这样最后直接就能返回最长的序列长度，不用再遍历了
+                ans = max(ans, dp[i][diff])
+        return ans + 1  # 由于没算序列开头，所以最后+1
 
     """
     其实defaultdict支持初始化乘默认返回1，如下
@@ -62,7 +61,7 @@ class Solution:
         for i in range(1, n):
             for j in range(i):
                 diff = nums[i] - nums[j]
-                dp[i][diff] = dp[j][diff] + 1
+                dp[i][diff] = max(dp[i][diff], dp[j][diff] + 1)
                 ans = max(ans, dp[i][diff])
         return ans
 
