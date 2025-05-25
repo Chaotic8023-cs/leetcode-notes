@@ -4,6 +4,9 @@ from typing import *
 """
 思路同#41缺失的第一个正数，归位数字，然后剩下的就是重复数
 时间O(n)，空间O(1)
+
+注：在#287寻找重复数中，nums的数也在[1, n]中，只是nums长度为n + 1且只有一个数字重复，所以最后swap完后，前n个位置上的[1, n]就会被归位，
+那个重复的数字就会到最后面，即nums[-1]，所以直接返回nums[-1]即可；但是本题要找所有重复的数，所以需要再遍历一次！
 """
 class Solution:
     def findDuplicates(self, nums: List[int]) -> List[int]:
