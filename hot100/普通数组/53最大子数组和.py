@@ -13,5 +13,29 @@ class Solution:
         return max(dp)
 
 
+"""
+改编：要求返回数组
+"""
+class Solution1:
+    def maxSubArray(self, nums: List[int]) -> List[int]:
+        n = len(nums)
+        dp = [[0, 1] for _ in range(n)]  # dp[i][0]存最大和，dp[i][1]存以i为结尾的最大和的子数组的长度（默认为1）
+        dp[0][0] = nums[0]
+        max_sum, max_idx, max_l = nums[0], 0, 1  # 记录一个全局最大：最大和、最大和出现的位置（结尾）、最大和数组的长度
+        for i in range(1, n):
+            if dp[i - 1][0] + nums[i] > nums[i]:  # 若和前面连上更大
+                dp[i][0] = dp[i - 1][0] + nums[i]
+                dp[i][1] = dp[i - 1][1] + 1  # 当前最大和子数组的长度 = 前半部分的长度 + 1
+            else:  # 否则最大和就是nums[i]，此时不更新最大和数组长度，因为默认就是1
+                dp[i][0] = nums[i]
+            # 遍历时就统计全局最大
+            if dp[i][0] > max_sum:
+                max_sum = dp[i][0]
+                max_idx = i
+                max_l = dp[i][1]
+        # print(f"max_sum: {max_sum}, arr: {nums[max_idx - max_l + 1:max_idx + 1]}")
+        return nums[max_idx - max_l + 1:max_idx + 1]  # 最后我们知道最大子数组出现的位置（结尾，即max_idx），和长度，于是往前推就能得到最大的子数组了
+
+
 
 
