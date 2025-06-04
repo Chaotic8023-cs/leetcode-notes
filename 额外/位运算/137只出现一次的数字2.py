@@ -26,6 +26,10 @@ class Solution:
                     ans -= 1 << 31  # 此时ans是原数2's complement除去sign bit后剩余的部分，它是反转再+1的结果（即非常大的正数），所以我们要调整回去得到真正的负数
         return ans
 
+    # 非位运算方法：nums中所有出现的数的和的三倍 - nums本身的和，就是那个只出现一次的数的两倍
+    def singleNumber1(self, nums: List[int]) -> int:
+        return (sum(set(nums)) * 3 - sum(nums)) // 2
+
 
 if __name__ == '__main__':
     sol = Solution()
