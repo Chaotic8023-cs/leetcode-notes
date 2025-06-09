@@ -23,4 +23,19 @@ class Solution:
         return node
 
 
+"""
+指针形式，无数组切片
+"""
+class Solution1:
+    def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
+        def buildTree(l, r):  # 都是闭区间
+            if l > r:  # 因为是闭区间，等于的情况说明还有一个元素可用，想象三个数的情况：[0,1,2]
+                return None
+            mid = (l + r) >> 1
+            root = TreeNode(nums[mid])
+            root.left = buildTree(l, mid - 1)
+            root.right = buildTree(mid + 1, r)
+            return root
+
+        return buildTree(0, len(nums) - 1)
 
