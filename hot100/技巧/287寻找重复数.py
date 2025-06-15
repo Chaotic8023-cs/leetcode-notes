@@ -39,13 +39,34 @@ class Solution:
 
 
 """
+真正符合题意的解法，不改动数组且空间O(1)，时间为O(n)。
+思路是看成环形链表2：nums长度为n+1，则我们将下标看作节点，即[0, n]一共 n+1 个节点；将nums[i]看作next指针，即下标i指向的是nums[i]。
+由于题中说明nums[i]的范围是[1, n]，所以不会出现越界的情况。由于某个数会重复，所以就有多个指针指向这个数，最终会形成环，而环的入口就是这个重复数。
+我们就可以用环形链表2的解法来解决次题。
+"""
+class Solution1:
+    def findDuplicate(self, nums: List[int]) -> int:
+        slow, fast = 0, 0  # 从第一个节点出发，即下标0
+        while True:  # 由于不会走到头，所以用while True就行
+            # nums[i]就相当于i.next
+            slow = nums[slow]  # slow走一步
+            fast = nums[nums[fast]]  # fast走两步
+            # 相遇时再用同样的方法找到环入口
+            if slow == fast:
+                i, j = 0, slow
+                while i != j:
+                    i, j = nums[i], nums[j]
+                return i
+
+
+"""
 二分：O(1)额外空间，O(nlogn)时间
 原理：因为数字范围是[1, n]，那么对于某个数字x，如果整个数组中 <=x 的数字的个数大于x，则说明数字范围[1,x]中有重复数字，否则[x+1,n]中有重复数字。
 例如：[2, 3, 1, 2, 4]，对于数字2，小于等于2的有1,2,2，一共三个，如果2不重复则为1,2两个。此时就说明数字范围[1,2]中出现重复数字了。
 所以我们就可以二分搜索，统一左开右闭，数字的范围是[1, n]所以left = 1，right=len(nums)，也就是right = n + 1。注意我们二分是直接分数字[1,n]，
 不是下标！
 """
-class Solution1:
+class Solution2:
     def findDuplicate(self, nums: List[int]) -> int:
         left, right = 1, len(nums)
         while left < right:
@@ -68,7 +89,7 @@ class Solution1:
 下标代表抽屉：放之前（修改nums[i]之前），先把nums[i]的数存下来作为下一个要放的数，然后再标记nums[i] = 0，意味着抽屉i已经放过了。因为数的范围是[1, n]，
 所以抽屉0没用，同时我们应该先从nums中第一个数开始，即下标0，所以一开始我们从0开始（虽然一开始给抽屉0存放多余，但是统一了逻辑）。
 """
-class Solution2:
+class Solution3:
     def findDuplicate(self, nums: List[int]) -> int:
         i = 0
         while True:
