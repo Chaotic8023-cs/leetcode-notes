@@ -64,7 +64,7 @@ class Solution:
         for i in range(1, n):
             for j in range(i):
                 diff = nums[i] - nums[j]
-                dp[i][diff] = max(dp[i][diff], dp[j][diff] + 1)
+                dp[i][diff] = max(dp[i][diff], dp[j][diff] + 1)  # 其实因为遍历j时每次diff都不一样，所以dp[i][diff]只会被更新一次，所以这里直接写成 dp[i][diff] = dp[j][diff] + 1 也可以！
                 ans = max(ans, dp[i][diff])
         return ans
 
