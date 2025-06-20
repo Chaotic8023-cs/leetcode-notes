@@ -8,19 +8,20 @@ class Solution:
     所以我们只需一个set来记录，如果和出现过了则return False，否则当n==1时return True
     """
     def isHappy(self, n: int) -> bool:
-        def get_sum(n):
+        def cal(x):  # 也可以直接遍历str(x)
             s = 0
-            while n > 0:
-                s += (n % 10) ** 2
-                n //= 10
+            while x > 0:
+                s += (x % 10) ** 2
+                x //= 10
             return s
 
-        record = set()
-        while n != 1:
-            n = get_sum(n)
-            if n in record:
+        visited = set()
+        curr = n
+        while curr != 1:
+            visited.add(curr)
+            curr = cal(curr)
+            if curr in visited:
                 return False
-            record.add(n)
         return True
 
 
