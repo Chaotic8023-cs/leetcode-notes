@@ -25,6 +25,26 @@ class Solution:
         return count
 
 
+"""
+也可以提前把两个都统计好然后遍历，唯一要注意的是，因为求的是不同下标的个数，所以是乘法原理！
+上面的方法中对于nums3和nums4的数我们是一个一个遍历的，所以是等效的。
+"""
+class Solution1:
+    def fourSumCount(self, nums1: List[int], nums2: List[int], nums3: List[int], nums4: List[int]) -> int:
+        cnt1, cnt2 = Counter(), Counter()
+        for num1 in nums1:
+            for num2 in nums2:
+                cnt1[num1 + num2] += 1
+        for num3 in nums3:
+            for num4 in nums4:
+                cnt2[num3 + num4] += 1
+        ans = 0
+        for x, cnt in cnt1.items():
+            if 0 - x in cnt2:
+                ans += cnt * cnt2[0 - x]  # 乘法原理：cnt1中的个数 * cnt2中的个数
+        return ans
+
+
 
 
 
