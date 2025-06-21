@@ -14,5 +14,22 @@ def main():
     print(s[n - k:] + s[:n - k])  # 取最后的k个字母拼到前面即可
 
 
+# 反转
+def main1():
+    def reverse(i, j):
+        while i < j:
+            s[i], s[j] = s[j], s[i]
+            i, j = i + 1, j - 1
+
+    k = int(input())
+    s = list(input())
+    n = len(s)
+    k %= n
+    reverse(0, n - 1)
+    reverse(0, k - 1)
+    reverse(k, n - 1)
+    print(''.join(s))
+
+
 if __name__ == '__main__':
     main()
