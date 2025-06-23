@@ -43,23 +43,21 @@ class Solution:
             return root
 
     """
-    按236中的普通二叉树做：每次返回左子树右子树有没有包含pq，以及找得到的lca
+    当成普通二叉树做：#236
     """
     def lowestCommonAncestor2(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-        def traverse(root, p, q):
+        def traverse(root):
             if root is None:
-                return False, False, None
-            lp, lq, llca = traverse(root.left, p, q)
-            rp, rq, rlca = traverse(root.right, p, q)
-            hasP, hasQ = lp or rp or root is p, lq or rq or root is q
-            if llca or rlca:
-                return True, True, llca or rlca
-            elif hasP and hasQ:
-                return True, True, root
-            else:
-                return hasP, hasQ, None
+                return None
+            if root == p or root == q:
+                return root
+            l = traverse(root.left)
+            r = traverse(root.right)
+            if l is not None and r is not None:
+                return root
+            return l or r
 
-        return traverse(root, p, q)[2]
+        return traverse(root)
 
 
 
