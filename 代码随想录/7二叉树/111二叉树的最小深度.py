@@ -1,5 +1,6 @@
 from typing import *
 from math import inf
+from collections import deque
 
 
 # Definition for a binary tree node.
@@ -29,8 +30,27 @@ class Solution:
         else:
             return min(a, b) + 1
 
-    # 如果想不出来上面的普通递归，那就直接暴力遍历，遇到一个叶子节点就更新一次ans
+    # 方法2:层序遍历，遇到的第一个叶节点就是最小的深度
     def minDepth1(self, root: Optional[TreeNode]) -> int:
+        q = deque([root])
+        ans = 0  # 用来记录当前深度
+        if root is None:
+            return ans
+        while q:
+            ans += 1
+            for _ in range(len(q)):
+                curr = q.popleft()
+                # 遇到的第一个叶节点就是最小深度
+                if curr.left is None and curr.right is None:
+                    return ans
+                if curr.left:
+                    q.append(curr.left)
+                if curr.right:
+                    q.append(curr.right)
+        return ans
+
+    # 如果想不出来上面的普通递归，那就直接暴力遍历，遇到一个叶子节点就更新一次ans
+    def minDepth2(self, root: Optional[TreeNode]) -> int:
         def traverse(root, d):
             if root is None:
                 return
