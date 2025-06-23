@@ -9,22 +9,22 @@ class TreeNode:
         self.right = right
 
 
+"""
+先序遍历：先序遍历二叉树，递归时更新目前的path，只有遇到叶节点才把当前的path加入到ans中
+"""
 class Solution:
-    """
-    先序遍历：先序遍历二叉树，递归时更新目前的path，只有遇到左右子树都为空的情况才把当前的path加入到ans中
-    """
     def binaryTreePaths(self, root: Optional[TreeNode]) -> List[str]:
-        def preorder(root, path, ans):
-            if not root:
-                return  # 其实是回溯
-            if not root.left and not root.right:  # 只有左右子树都为空才算一条路径
+        def traverse(root, path, ans):
+            if root is None:  # 应对某些节点只有一边有子树
+                return
+            if root.left is None and root.right is None:  # 只有叶节点才算一条合法的path
                 ans.append(path + str(root.val))
-            # 递归时更新已经走过的路径
-            preorder(root.left, path + f"{root.val}->", ans)
-            preorder(root.right, path + f"{root.val}->", ans)
+                return
+            traverse(root.left, path + f"{root.val}->", ans)
+            traverse(root.right, path + f"{root.val}->", ans)
 
         ans = []
-        preorder(root, "", ans)
+        traverse(root, "", ans)
         return ans
 
 
