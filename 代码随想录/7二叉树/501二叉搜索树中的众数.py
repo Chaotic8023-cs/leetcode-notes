@@ -72,6 +72,30 @@ class Solution:
         return ans
 
 
+# 上面法1的简化版，记这个
+class Solution1:
+    def findMode(self, root: Optional[TreeNode]) -> List[int]:
+        def traverse(root):
+            if root is None:
+                return
+            nonlocal prev, curr_cnt, max_cnt, ans
+            traverse(root.left)
+            curr_cnt = curr_cnt + 1 if root.val == prev else 1
+            if curr_cnt == max_cnt:
+                ans.append(root.val)
+            elif curr_cnt > max_cnt:
+                ans = [root.val]
+                max_cnt = curr_cnt
+            prev = root.val
+            traverse(root.right)
+
+        prev = None
+        curr_cnt = max_cnt = 0
+        ans = []
+        traverse(root)
+        return ans
+
+
 if __name__ == '__main__':
     sol = Solution()
     root = TreeNode(0, None, TreeNode(0))
