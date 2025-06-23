@@ -1,4 +1,6 @@
 from typing import *
+from math import inf
+from collections import deque
 
 
 # Definition for a binary tree node.
@@ -27,6 +29,22 @@ class Solution:
         ans = float('inf')
         prev = -float('inf')
         traverse(root)
+        return ans
+
+    # 迭代中序遍历
+    def getMinimumDifference1(self, root: Optional[TreeNode]) -> int:
+        prev = -inf
+        ans = inf
+        stack = deque()
+        curr = root
+        while stack or curr:
+            while curr:
+                stack.append(curr)
+                curr = curr.left
+            curr = stack.pop()
+            ans = min(ans, abs(curr.val - prev))
+            prev = curr.val
+            curr = curr.right
         return ans
 
 
