@@ -28,6 +28,31 @@ class Solution:
         return ans
 
 
+# 横向和纵向去重拆出来单独写，更清晰一些
+class Solution1:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        def backtracking(state, ans, used):
+            if len(state) == len(nums):
+                ans.append(state[:])
+                return
+            prev = None  # 横向去重
+            for i in range(len(nums)):
+                if nums[i] == prev:
+                    continue
+                if not used[i]:  # 纵向去重
+                    used[i] = True
+                    state.append(nums[i])
+                    backtracking(state, ans, used)
+                    prev = state.pop()
+                    used[i] = False
+
+        nums.sort()
+        ans = []
+        used = [False] * len(nums)
+        backtracking([], ans, used)
+        return ans
+
+
 if __name__ == '__main__':
     sol = Solution()
     nums = [1, 1, 2]
