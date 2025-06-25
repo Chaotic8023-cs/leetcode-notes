@@ -30,6 +30,33 @@ class Solution:
         return ans
 
 
+# 优化了一下写法，记这个
+class Solution1:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        def valid(s):
+            if len(s) > 1 and s[0] == '0':
+                return False
+            if int(s) > 255:
+                return False
+            return True
+
+        def backtracking(state, start_idx, ans):
+            if len(state) == 3:  # 累积到3各时就可以判断最后剩的部分是否valid
+                if valid(s[start_idx:]):
+                    ans.append('.'.join(state + [s[start_idx:]]))
+                    return
+                return
+            for end in range(start_idx, len(s) - 1):
+                if valid(s[start_idx:end + 1]):
+                    state.append(s[start_idx:end + 1])
+                    backtracking(state, end + 1, ans)
+                    state.pop()
+
+        ans = []
+        backtracking([], 0, ans)
+        return ans
+
+
 if __name__ == '__main__':
     sol = Solution()
     s = "101023"
