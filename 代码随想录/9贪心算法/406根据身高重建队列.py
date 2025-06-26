@@ -17,7 +17,7 @@ class Solution:
         ans = []
         # 排序：按身高倒排，按k正排
         for h, k in sorted(people, key=lambda x: (-x[0], x[1])):
-            ans.insert(k, [h, k])
+            ans.insert(k, [h, k])  # 优化：使用 ans[k:k] = [(h, k)] 来进行插入，这样省去了调用函数insert的时间
         return ans
 
 
