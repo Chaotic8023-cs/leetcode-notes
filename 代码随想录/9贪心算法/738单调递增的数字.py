@@ -18,9 +18,22 @@ class Solution:
         return n
 
     """
-    直接进行运算，不转str。记上面那个，好记！
+    单独用一个变量x来记录10的指数，非常方便，记住这个即可。
     """
     def monotoneIncreasingDigits1(self, n: int) -> int:
+        s = str(n)
+        x = 1
+        for i in range(len(s) - 2, -1, -1):
+            if s[i] > s[i + 1]:
+                n -= n % (10 ** x) + 1
+                s = str(n)
+            x += 1
+        return n
+
+    """
+    直接进行运算，不转str：不好记
+    """
+    def monotoneIncreasingDigits2(self, n: int) -> int:
         # 先统计n的位数
         nums_digits, i = 0, 1
         x = n
