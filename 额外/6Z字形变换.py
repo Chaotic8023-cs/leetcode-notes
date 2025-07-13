@@ -46,6 +46,27 @@ class Solution1:
         return ''.join(ans)
 
 
+
+"""
+上面优化版的另一个写法，当i已经超过边界(i == numRows or i == -1)时才反转dx。
+还是上面的好记，记上面的即可。
+"""
+class Solution2:
+    def convert(self, s: str, numRows: int) -> str:
+        if numRows == 1:
+            return s
+        ans = ["" for _ in range(numRows)]
+        i, dx = 0, 1
+        for c in s:
+            ans[i] += c
+            i += dx
+            if i == numRows or i == -1:
+                dx = -dx
+                i = i - 2 if i == numRows else i + 2
+        return ''.join(ans)
+
+
+
 if __name__ == '__main__':
     sol = Solution1()
     s = "PAYPALISHIRING"
