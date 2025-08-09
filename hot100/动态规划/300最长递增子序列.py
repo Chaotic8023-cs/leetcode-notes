@@ -49,6 +49,26 @@ class Solution1:
             curr = parent[curr]
         return ans[::-1]
 
+    # 简洁写法
+    def lengthOfLIS1(self, nums: List[int]) -> int:
+        n = len(nums)
+        dp = [[1, -1] for _ in range(n)]  # dp[i] = [max_len, parent]
+        max_len, max_idx = 1, 0
+        for i in range(1, n):
+            for j in range(i):
+                if nums[i] > nums[j]:
+                    if dp[j][0] + 1 > dp[i][0]:
+                        dp[i][0] = dp[j][0] + 1
+                        dp[i][1] = j
+                if dp[i][0] > max_len:
+                    max_len = dp[i][0]
+                    max_idx = i
+        ans = []
+        curr = max_idx
+        while curr != -1:
+            ans.append(nums[curr])
+            curr = dp[curr][1]
+        return len(ans[::-1])
 
 
 
