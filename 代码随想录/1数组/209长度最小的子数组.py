@@ -1,4 +1,5 @@
 from typing import *
+from math import inf
 
 
 class Solution:
@@ -23,6 +24,21 @@ class Solution:
                 left += 1
             right += 1
         return ans if ans != float('inf') else 0
+    
+    # 使用i，j，更直观的双指针
+    def minSubArrayLen1(self, target: int, nums: List[int]) -> int:
+        n = len(nums)
+        ans = inf
+        i, j = 0, 0
+        curr_sum = 0
+        while j < n:
+            curr_sum += nums[j]
+            while curr_sum >= target:
+                ans = min(ans, j - i + 1)
+                curr_sum -= nums[i]
+                i += 1
+            j += 1
+        return ans if ans < inf else 0
 
 
 if __name__ == '__main__':
