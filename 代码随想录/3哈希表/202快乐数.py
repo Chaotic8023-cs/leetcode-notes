@@ -23,6 +23,21 @@ class Solution:
             if curr in visited:
                 return False
         return True
+    
+
+# 更简洁的写法，记这个
+class Solution1:
+    def isHappy(self, n: int) -> bool:
+        def gen_next(n):
+            return sum(int(d) ** 2 for d in str(n))
+        
+        seen = set()
+        while n not in seen:
+            seen.add(n)
+            n = gen_next(n)
+            if n == 1:
+                return True
+        return False
 
 
 if __name__ == '__main__':
