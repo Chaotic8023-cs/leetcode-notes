@@ -25,5 +25,9 @@ class Solution:
     """
     def repeatedSubstringPattern1(self, s: str) -> bool:
         return (s + s).index(s, 1) < len(s)
+    
+    # 从下标1开始找的index小于len(s)等效于 s in (s + s)[1:-1]
+    def repeatedSubstringPattern2(self, s: str) -> bool:
+        return s in (s + s)[1:-1]
 
 
