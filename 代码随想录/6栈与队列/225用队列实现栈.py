@@ -71,4 +71,29 @@ class MyStack1:
 
     def empty(self) -> bool:
         return len(self.q1) == 0 and len(self.q2) == 0
+    
+
+# 优化版：明确命名区分in和out
+class MyStack2:
+
+    def __init__(self):
+        self.q_in = deque()  # q_in一直存所有的元素
+        self.q_out = deque()  # q_out为临时中转用
+
+    def push(self, x: int) -> None:
+        self.q_in.append(x)
+
+    def pop(self) -> int:
+        for _ in range(len(self.q_in) - 1):
+            self.q_out.append(self.q_in.popleft())
+        self.q_in, self.q_out = self.q_out, self.q_in  # 此时q_in剩的那个就是要pop掉的元素，于是做交换，保证q_in一直存所有的元素
+        return self.q_out.popleft()
+
+    def top(self) -> int:
+        x = self.pop()
+        self.q_in.append(x)
+        return x
+    
+    def empty(self) -> bool:
+        return len(self.q_in) == 0 and len(self.q_out) == 0
 
