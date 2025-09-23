@@ -16,18 +16,21 @@ class Solution:
     这样在上层就可以检查子树是否平衡了。
     """
     def isBalanced(self, root: Optional[TreeNode]) -> bool:
-        def height(root):
+        def traverse(root):
             if not root:
                 return 0
-            l = height(root.left)
-            r = height(root.right)
-            # 如果子树不平衡直接返回-1（l == -1 or r == -1），如果当前节点不平衡也直接返回-1（abs(l - r) > 1）
-            if l == -1 or r == -1 or abs(l - r) > 1:
+            l = traverse(root.left)
+            r = traverse(root.right)
+            # 如果子树不平衡则直接返回-1
+            if l == -1 or r == -1:
                 return -1
-            else:
-                return max(l, r) + 1  # 一个节点的高度是左右子树中最高的那个+1
+            # 如果当前节点不平衡也直接返回-1
+            if abs(l - r) > 1:
+                return -1
+            # 正常情况下按计算高度返回
+            return max(l, r) + 1  # 一个节点的高度是左右子树中最高的那个+1
 
-        return height(root) != -1  # 如果从root能正常算出高度（不为-1），则说明所有子树都平衡
+        return traverse(root) != -1  # 如果从root能正常算出高度（不为-1），则说明所有子树都平衡
 
 
 
