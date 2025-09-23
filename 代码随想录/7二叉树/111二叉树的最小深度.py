@@ -16,19 +16,21 @@ class Solution:
     递归：和104二叉树的最大深度类似，但是这里要注意的是最小深度如果只把max改成min的话在某些情况下会出问题，比如根节点只有右子树，
     这时在根节点min会返回0，但其实左子树为空，不能算作一条路径。所以在选择左右子树的深度时，只有都>1的条件下才能用min(a, b) + 1！
     写法相当于后序，先统计左右子树的深度，再网上累加
-    """
+    """ 
     def minDepth(self, root: Optional[TreeNode]) -> int:
-        if not root:
-            return 0
-        a = self.minDepth(root.left)
-        b = self.minDepth(root.right)
-        # 当有一侧没有子树时，选择有子树的另一侧
-        if a == 0:
-            return b + 1
-        elif b == 0:
-            return a + 1
-        else:
-            return min(a, b) + 1
+        def traverse(root):
+            if root is None:
+                return 0
+            l = traverse(root.left)
+            r = traverse(root.right)
+            # 当有一侧没有子树时，选择有子树的另一侧
+            if l == 0:
+                return r + 1
+            elif r == 0:
+                return l + 1
+            return min(l, r) + 1
+
+        return traverse(root)
 
     # 方法2:层序遍历，遇到的第一个叶节点就是最小的深度
     def minDepth1(self, root: Optional[TreeNode]) -> int:
