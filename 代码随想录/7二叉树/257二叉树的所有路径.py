@@ -26,6 +26,22 @@ class Solution:
         ans = []
         traverse(root, "", ans)
         return ans
+    
+# 另一种写法：最后用 "->" 来join，path只记录节点
+class Solution1:
+    def binaryTreePaths(self, root: Optional[TreeNode]) -> List[str]:
+        def traverse(root, path, ans):
+            if root is None:
+                return
+            if root.left is None and root.right is None:
+                ans.append("->".join(path + [str(root.val)]))
+                return
+            traverse(root.left, path + [str(root.val)], ans)
+            traverse(root.right, path + [str(root.val)], ans)
+
+        ans = []
+        traverse(root, [], ans)
+        return ans
 
 
 
