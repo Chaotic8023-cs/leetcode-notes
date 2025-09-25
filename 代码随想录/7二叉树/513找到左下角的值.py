@@ -47,6 +47,20 @@ class Solution:
         ans = 0
         traverse(root, 1)
         return ans
+    
+
+# 巧妙解法：从右到左层序遍历，最后一个节点一定是左下角！
+class Solution1:
+    def findBottomLeftValue(self, root: Optional[TreeNode]) -> int:
+        q = deque([root])
+        while q:
+            node = q.popleft()
+            # 从右到左，所以先加right
+            if node.right:
+                q.append(node.right)
+            if node.left:
+                q.append(node.left)
+        return node.val
 
 
 
