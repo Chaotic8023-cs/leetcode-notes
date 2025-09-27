@@ -39,6 +39,31 @@ class Solution:
         candidates = sorted(candidates)  # 事先进行排序，以配合横向去重
         self.backtracking([], candidates, target, ans, 0)
         return ans
+    
+
+# 简洁版
+class Solution1:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        def backtracking(state, start_idx, ans, s):
+            if s > target:
+                return
+            elif s == target:
+                ans.append(state[:])
+                return
+            prev = None
+            for i in range(start_idx, len(candidates)):
+                if candidates[i] == prev:
+                    continue
+                state.append(candidates[i])
+                s += candidates[i]
+                backtracking(state, i + 1, ans, s)
+                s -= candidates[i]
+                prev = state.pop()
+
+        ans = []
+        candidates.sort()
+        backtracking([], 0, ans, 0)
+        return ans
 
 
 if __name__ == '__main__':
