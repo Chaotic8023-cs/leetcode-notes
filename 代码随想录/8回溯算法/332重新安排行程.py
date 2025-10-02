@@ -27,36 +27,23 @@ class Solution:
         return ans[::-1]  # ans为欧拉路径的倒序
 
 
-
+# 简化版，记这个就行
 class Solution1:
-    """
-    自己写的回溯法，超时！这题其实是找欧拉路径，这里回溯法会找到所有的欧拉路径（在终止条件不直接返回的话）。其实找单一欧拉路径
-    就用DFS。
-    """
-    def backtracking(self, state, tickets, used):
-        if all(end == True for v in used.values() for end in v):
-            return ["JFK"] + state[:]
-        start = "JFK" if len(state) == 0 else state[-1]
-        for i, end in enumerate(tickets[start]):
-            if used[start][i]:
-                continue
-            state.append(end)
-            used[start][i] = True
-            ans = self.backtracking(state, tickets, used)
-            if ans:
-                return ans
-            state.pop()
-            used[start][i] = False
-
     def findItinerary(self, tickets: List[List[str]]) -> List[str]:
-        t = defaultdict(list)
-        used = defaultdict(list)  # 就算用used也会超时！
-        for start, end in tickets:
-            t[start].append(end)
-            used[start].append(False)
-        for k in t:
-            t[k].sort()  # 保证字典顺序的目的地优先
-        return self.backtracking([], t, used)
+        def dfs(g, curr, ans):
+            while len(g[curr]) > 0:
+                dest = g[curr].pop(0)
+                dfs(g, dest, ans)
+            ans.append(curr)
+        
+        g = defaultdict(list)
+        for x, y in tickets:
+            g[x].append(y)
+        for k, v in g.items():
+            v.sort()
+        ans = []
+        dfs(g, "JFK", ans)
+        return ans[::-1]
 
 
 
