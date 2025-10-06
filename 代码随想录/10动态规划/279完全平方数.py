@@ -29,10 +29,10 @@ class Solution:
         dp = [[inf] * (capacity + 1) for _ in range(num_items + 1)]  # 求最小物品个数全部初始化为inf
         dp[0][0] = 0  # 求最小物品个数dp[0][0] = 0
         for i in range(1, num_items + 1):  # 一共num_items个数，刚好从1开始，所以每个i就是候选数本身，可以直接用!
-            for j in range(capacity + 1):  # 1d时正序 -> 可以复选
+            for j in range(capacity + 1):
                 dp[i][j] = dp[i - 1][j]
-                if j >= i ** 2:
-                    dp[i][j] = min(dp[i][j], dp[i][j - i ** 2] + 1)  # 注意完全背包用dp[i]！
+                if j >= i ** 2:  # 此时容量能容下当前数的平方
+                    dp[i][j] = min(dp[i][j], dp[i][j - i ** 2] + 1)  # 注意完全背包用dp[i]（能复选！）！
         return dp[num_items][capacity]
 
 
