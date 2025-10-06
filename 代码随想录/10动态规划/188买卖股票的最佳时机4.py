@@ -27,7 +27,25 @@ class Solution:
                 dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - 1] - prices[i])  # 第xxx次持有
                 dp[i][j + 1] = max(dp[i - 1][j + 1], dp[i - 1][j] + prices[i])  # 第xxx次不持有
         # 返回最后一个维度的全部状态中的最大值
-        return max(dp[n - 1][k] for k in range(2 * k + 1))
+        return max(dp[n - 1])
+    
+
+
+# 省去第一个状态（什么都没做）的版本
+class Solution1:
+    def maxProfit(self, k: int, prices: List[int]) -> int:
+        n = len(prices)
+        dp = [[0 for _ in range(2 * k)] for _ in range(n)]  # 0：第1次持有，1：第1次不持有，2：第2次持有，...
+        for i in range(2 * k):
+            if i % 2 == 0:
+                dp[0][i] = -prices[0]
+        for i in range(1, n):
+            for j in range(2 * k):
+                if j % 2 == 0:
+                    dp[i][j] = max(dp[i - 1][j], -prices[i] if j == 0 else dp[i - 1][j - 1] - prices[i])  # 第一次持有时直接是 -prices[i]
+                else:
+                    dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - 1] + prices[i])
+        return max(dp[n - 1])
 
 
 
