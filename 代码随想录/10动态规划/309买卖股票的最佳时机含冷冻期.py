@@ -23,6 +23,7 @@ class Solution:
                 dp[i][0] = max(dp[i - 1][0], dp[i - 2][1] - prices[i])
             else:  # 注意，得考虑i-2为-1的情况，按0-index讲，第1天的前一天是第-1天，还没有操作，所以第-1天不持有能获得的最大利润就是0，直接把dp[i - 2][1]替换成0即可
                 dp[i][0] = max(dp[i - 1][0], -prices[i])
+            # 写成一行：dp[i][0] = max(dp[i - 1][0], dp[i - 2][1] - prices[i] if i > 1 else -prices[i])
             dp[i][1] = max(dp[i - 1][1], dp[i - 1][0] + prices[i])
         return max(dp[n - 1][0], dp[n - 1][1])
 
