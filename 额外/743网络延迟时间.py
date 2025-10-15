@@ -11,14 +11,14 @@ class Solution:
     """
     def dijkstra(self, graph, start):
         pq = []
-        heapq.heappush(pq, (start, 0, [start]))  # start, cost, path
+        heapq.heappush(pq, (0, start, [start]))  # cost, node, path
         best_g = {start: 0}  # 有visited的作用，防止cycle
         while pq:
-            curr, cost, path = heapq.heappop(pq)
+            cost, curr, path = heapq.heappop(pq)
             for node, w in graph[curr]:
                 if node not in best_g or (cost + w) < best_g[node]:
                     best_g[node] = cost + w
-                    heapq.heappush(pq, (node, cost + w, path + [node]))
+                    heapq.heappush(pq, (cost + w, node, path + [node]))
         return best_g
     
     def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
