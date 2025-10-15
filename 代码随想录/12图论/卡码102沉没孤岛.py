@@ -58,56 +58,43 @@ def main():
 其实不用先把挨着外围的岛屿+1，这样最后普通dfs会把外围岛屿重复计算一次。
 我们直接用一个统一的visited数组，先把外围岛屿标记visited，最后再遍历中心区域（没visited）的岛屿进行“沉没”即可。
 """
-
-
 def main1():
     # 读取数据
-    n, m = map(int, input().split())
+    m, n = map(int, input().split())
     grid = []
-    for _ in range(n):
+    for _ in range(m):
         grid.append(list(map(int, input().split())))
-    # 解题
-    visited = [[False] * m for _ in range(n)]
-    # 先看四个边缘，把所有挨着边缘的孤岛进行visited标记
-    for j in range(m):
-        if not visited[0][j] and grid[0][j] == 1:
-            dfs1(grid, 0, j, n, m, visited)
-        if not visited[n - 1][j] and grid[n - 1][j] == 1:
-            dfs1(grid, n - 1, j, n, m, visited)
-    for i in range(n):
-        if not visited[i][0] and grid[i][0] == 1:
-            dfs1(grid, i, 0, n, m, visited)
-        if not visited[i][m - 1] and grid[i][m - 1] == 1:
-            dfs1(grid, i, m - 1, n, m, visited)
-    # 再遍历中间部分孤岛，将其沉没
-    for i in range(1, n - 1):
-        for j in range(1, m - 1):
+
+    dirs = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+    visited = [[False] * n for _ in range(m)]
+
+    def dfs(i, j):
+        visited[i][j] = True
+        for dx, dy in dirs:
+            nx, ny = i + dx, j + dy
+            if 0 <= nx < m and 0 <= ny < n and not visited[nx][ny] and grid[nx][ny] == 1:
+                dfs(nx, ny)
+    # 先 DFS 标记所有与边界相连的陆地（非孤岛）
+    for i in range(m):
+        if grid[i][0] == 1 and not visited[i][0]:
+            dfs(i, 0)
+        if grid[i][n - 1] == 1 and not visited[i][n - 1]:
+            dfs(i, n - 1)
+    for j in range(n):
+        if grid[0][j] == 1 and not visited[0][j]:
+            dfs(0, j)
+        if grid[m - 1][j] == 1 and not visited[m - 1][j]:
+            dfs(m - 1, j)
+
+    # 然后将孤岛标记为0沉没
+    for i in range(1, m - 1):
+        for j in range(1, n - 1):
             if not visited[i][j] and grid[i][j] == 1:
-                dfs1_rm(grid, i, j, n, m, visited)
+                grid[i][j] = 0  # 这里和卡码101题一样，中间部分直接标0就行，不需要专门dfs！
+
     # 打印答案
-    for i in range(n):
-        for j in range(m - 1):
-            print(grid[i][j], end=" ")
-        print(grid[i][m - 1])
-
-
-def dfs1(grid, i, j, n, m, visited):
-    visited[i][j] = True
-    dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
-    for dx, dy in dirs:
-        nx, ny = i + dx, j + dy
-        if 0 <= nx < n and 0 <= ny < m and not visited[nx][ny] and grid[nx][ny] == 1:
-            dfs(grid, nx, ny, n, m, visited)
-
-
-def dfs1_rm(grid, i, j, n, m, visited):
-    visited[i][j] = True
-    grid[i][j] = 0
-    dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
-    for dx, dy in dirs:
-        nx, ny = i + dx, j + dy
-        if 0 <= nx < n and 0 <= ny < m and not visited[nx][ny] and grid[nx][ny] == 1:
-            dfs1_rm(grid, nx, ny, n, m, visited)
+    for line in grid:
+        print(' '.join(str(x) for x in line))
 
 
 if __name__ == '__main__':
