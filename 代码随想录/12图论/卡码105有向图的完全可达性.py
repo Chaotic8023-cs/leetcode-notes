@@ -8,11 +8,9 @@ DFS：从1进行dfs全部遍历一遍，然后看是不是所有节点都遍历�
 def main():
     def dfs(curr, g, visited, n, k):
         visited.add(curr)
-        cnt = 1
         for n in g[curr]:
             if n not in visited:
-                cnt += dfs(n, g, visited, n, k)
-        return cnt
+                dfs(n, g, visited, n, k)
 
     n, k = map(int, input().split())
     g = defaultdict(list)
@@ -20,7 +18,7 @@ def main():
         s, t = map(int, input().split())
         g[s].append(t)
     visited = set()
-    cnt = dfs(1, g, visited, n, k)
+    dfs(1, g, visited, n, k)
     if len(visited) == n:
         print(1)
     else:
