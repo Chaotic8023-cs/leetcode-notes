@@ -82,6 +82,7 @@ def main1():
     ans = 0
     for i in range(1, n - 1):
         for j in range(1, m - 1):
+            # 这里其实遍历中间部分就不用常规dfs统计岛屿面积了，直接遇到1就加1即可！
             if not visited[i][j] and grid[i][j] == 1:
                 ans += dfs1(grid, i, j, visited, n, m)
     # 打印答案
