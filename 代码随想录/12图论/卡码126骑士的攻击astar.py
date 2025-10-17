@@ -2,6 +2,29 @@
 import heapq
 
 
+"""
+注意：heuristic如果选用L1距离的化，不能保证最优路径！
+astar给出最优路径的条件是：启发函数h是
+    1. admissible: h(n) <= h*(n)
+    2. consistent: h(n) <= c(n, n') + h(n')
+
+如果使用L1距离，考虑如下情况：
+    A: (0, 0)
+    B: (1, 2)
+    goal_1: (1, 2)
+    goal_2: (2, 3)
+
+    对于goal_1:
+    h(A) = |0-1| + |0-2| = 3
+    h*(A) = 1
+    显然 h(A) <= h*(A)不成立，即h不admissible，不能保证路径最优！
+
+    对于goal_2:
+    h(A) = |0-2| + |0-3| = 5
+    h(B) = |1-2| + |2-3| = 2
+    c(A, B) = 1
+    显然 h(A) <= c(A, B) + h(B) -> 5 <= 1 + 2不成立，即h不consistent，不能保证路径最优！
+"""
 def h(a, b):  # heuristic: 欧拉距离（L2距离）
     return ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5
 
