@@ -45,7 +45,7 @@ class Solution:
          
         # 2. 分离前后两段, 将后半段按照规则拼接到前半段
         l1, l2 = head, reverse(slow.next)
-        slow.next = None 
+        slow.next = None  # 要断开前后两段，不然会无穷循环
         while l2:
             tmp1, tmp2 = l1.next, l2.next
             l1.next = l2
