@@ -14,6 +14,8 @@ from collections import deque
         我们会得到: [[1], [2, 4], [3, 5, 7], [6, 8], [9]]
 因为题目是z字形的遍历，所以我们把结果中的偶数层进行reverse即可：[[1], [2, 4], [7, 5, 3], [6, 8], [9]]
 最终把所有层展开即可return。
+
+注意：这里visited必须是加入q前就要设为True，因为在加入下一层的节点时会存在重复，且这些节点还没有"真正的visited"！
 """
 class Solution:
     def findDiagonalOrder(self, mat: List[List[int]]) -> List[int]:
@@ -32,7 +34,7 @@ class Solution:
                 for dx, dy in dirs:
                     nx, ny = x + dx, y + dy
                     if 0 <= nx < m and 0 <= ny < n and not visited[nx][ny]:
-                        visited[nx][ny] = True
+                        visited[nx][ny] = True  # 提前visited
                         q.append((nx, ny))
             ans.append(curr_level)
         # 对结果中的偶数层进行反转
