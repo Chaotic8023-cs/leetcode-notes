@@ -55,18 +55,18 @@ class Solution1:
         Do not return anything, modify nums in-place instead.
         """
         n = len(nums)
-        i, j = -1, n
-        k = 0
-        while k < j:
-            if nums[k] == 0:
-                nums[k], nums[i + 1] = nums[i + 1], nums[k]
+        i, k = -1, n
+        j = 0
+        while j < k:
+            if nums[j] == 0:
+                nums[i + 1], nums[j] = nums[j], nums[i + 1]
                 i += 1
-                k += 1
-            elif nums[k] == 2:
-                nums[k], nums[j - 1] = nums[j - 1], nums[k]
-                j -= 1
-            else:  # nums[k] == 1
-                k += 1
+                j += 1
+            elif nums[j] == 2:
+                nums[k - 1], nums[j] = nums[j], nums[k - 1]
+                k -= 1
+            else:
+                j += 1
 
 
 
