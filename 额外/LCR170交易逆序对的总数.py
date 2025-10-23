@@ -24,3 +24,28 @@ class Solution:
             q.insert(i, -v)  # 优化：q[i:i] = [-v]，这样就没有函数调用，而是只有切片，会变快不少
         return ans
 
+
+"""
+自己实现简化版的 bisect_left
+"""
+class Solution1:
+    def reversePairs(self, record: List[int]) -> int:
+
+        # 和 34在排序数组中查找元素的第一个和最后一个位置 中leftmost实现一样，只是最后把 nums[left] == target 的相等检查去掉，直接返回left
+        def bisect_left_(nums, target):
+            left, right = 0, len(nums)
+            while left < right:
+                mid = (left + right) >> 1
+                if target <= nums[mid]:
+                    right = mid
+                else:
+                    left = mid + 1
+            return left
+
+        arr = []
+        ans = 0
+        for v in record:
+            i = bisect_left_(arr, -v)
+            ans += i
+            arr[i:i] = [-v]
+        return ans
