@@ -170,3 +170,18 @@ class Solution:
 
 
 
+"""
+补充：求数组中第k小的数
+求第k大的数时使用小顶堆存最大的k个数
+那么求第k小的时候反着来，使用大顶堆存最小的k个数
+"""
+class Solution1:
+    def findKthSmallest(self, nums: List[int], k: int) -> int:
+        # 最大堆（通过取反实现）
+        max_heap = []
+        for n in nums:
+            heapq.heappush(max_heap, -n)
+            if len(max_heap) > k:
+                heapq.heappop(max_heap)
+        # 堆顶是第k小元素的相反数
+        return -max_heap[0]
