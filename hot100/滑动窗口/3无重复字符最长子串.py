@@ -22,6 +22,22 @@ class Solution:
                 i += 1
             ans = max(ans, j - i + 1)
         return ans
+    
+# 也可以外层循环也用while
+class Solution1:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        n = len(s)
+        cnt = defaultdict(int)
+        i, j = 0, 0
+        ans = 0
+        while j < n:
+            cnt[s[j]] += 1
+            while cnt[s[j]] > 1:
+                cnt[s[i]] -= 1
+                i += 1
+            ans = max(ans, j - i + 1)
+            j += 1
+        return ans
 
 
 if __name__ == '__main__':
