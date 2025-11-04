@@ -55,3 +55,19 @@ class Solution2:
         return sum(nums[max_idx - max_len + 1:max_idx + 1])  # 拥有最大和的子数组就是 nums[max_idx - max_len + 1:max_idx + 1]
 
 
+# 记录最大和和长度的dp数组分开的写法
+class Solution3:
+    def maxSubArray(self, nums: List[int]) -> int:
+        n = len(nums)
+        dp = [nums[i] for i in range(n)]
+        l = [1] * n  # 记录每个下标的最大和对应的子数组长度
+        dp[0] = nums[0]
+        max_sum, max_idx = nums[0], 0
+        for i in range(1, n):
+            if dp[i - 1] + nums[i] > nums[i]:
+                dp[i] = dp[i - 1] + nums[i]
+                l[i] = l[i - 1] + 1
+            if dp[i] > max_sum:
+                max_sum = dp[i]
+                max_idx = i
+        return sum(nums[max_idx - l[max_idx] + 1:max_idx + 1])
