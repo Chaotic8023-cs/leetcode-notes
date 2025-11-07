@@ -26,7 +26,7 @@ put；
 class LRUCache:
     def __init__(self, capacity: int):
         self.capacity = capacity
-        self.count = 0
+        self.size = 0
         self.mapping = {}  # 哈希表：key -> 节点
         self.head = Node()
         self.tail = Node()
@@ -52,12 +52,12 @@ class LRUCache:
             node = Node(key, value)
             self.add_to_head(node)
             self.mapping[key] = node
-            self.count += 1
-            if self.count > self.capacity:  # 如果超容，则删除最旧的node，即最后一个node
-                k = self.tail.prev.key
-                self.remove_node(self.tail.prev)
-                self.count -= 1
-                self.mapping.pop(k)  # 映射也得删除这个尾部的节点！
+            self.size += 1
+            if self.size > self.capacity:  # 如果超容，则删除最旧的node，即最后一个node
+                node = self.tail.prev
+                self.remove_node(node)
+                self.mapping.pop(node.key)  # 映射也得删除这个尾部的节点！
+                self.size -= 1
 
     # 删除一个节点：直接删除（不用管它的两个指针，因为不会被用到，且如果要更新的话也会在add_to_head中更新）
     def remove_node(self, node):
@@ -66,12 +66,21 @@ class LRUCache:
 
     # 在头部插入一个节点，即放到head后，第一个节点前
     def add_to_head(self, node):
-        node.next = self.head.next
-        node.prev = self.head
+        temp = self.head.next
         self.head.next = node
-        node.next.prev = node
+        node.next = temp
+        temp.prev = node
+        node.prev = self.head
 
+"""
+add_to_head也可以这么写，但是不如上面的写法好记：
 
+def add_to_head(self, node):
+    node.next = self.head.next
+    node.prev = self.head
+    self.head.next = node
+    node.next.prev = node
+"""
 
 
 
