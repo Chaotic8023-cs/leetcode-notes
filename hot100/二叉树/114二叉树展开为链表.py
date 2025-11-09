@@ -37,6 +37,29 @@ class Solution:
             preorder[i].right = preorder[i + 1]
             preorder[i].left = None
         return root
+    
+
+"""
+边遍历边展开：
+我们发现前序遍历时，要设置的right指针是之后要遍历到的节点，无法获得。但是，我们
+"""
+class Solution1:
+    def flatten(self, root: Optional[TreeNode]) -> None:
+        """
+        Do not return anything, modify root in-place instead.
+        """
+        def traverse(root):
+            if root is None:
+                return
+            traverse(root.right)
+            traverse(root.left)
+            nonlocal node
+            root.left = None
+            root.right = node
+            node = root
+
+        node = None
+        traverse(root)
 
 
 
