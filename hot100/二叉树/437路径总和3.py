@@ -54,7 +54,7 @@ class Solution:
             traverse(root.left, s)
             traverse(root.right, s)
             cnt[s] -= 1  # 从子树回来进行回溯
-            s -= root.val  # 这里的s如果不回溯也不影响答案，因为s是local变量，之后不会再用到！
+            # s -= root.val  # 这里的s如果不回溯也不影响答案，因为s是local变量，之后不会再用到！
 
         cnt = defaultdict(int)
         cnt[0] = 1
