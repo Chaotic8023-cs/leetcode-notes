@@ -21,7 +21,7 @@ class Solution:
         def traverse(root):
             if root is None:
                 return None
-            # 如果当前节点就是p/q，那么就返回找到的p/q
+            # 如果当前节点就是p/q，那么就直接返回找到的p/q（不用再往下找了）
             if root == p or root == q:
                 return root
             l = traverse(root.left)
