@@ -40,8 +40,10 @@ class Solution:
     
 
 """
-边遍历边展开：
-我们发现前序遍历时，要设置的right指针是之后要遍历到的节点，无法获得。但是，我们
+边遍历边展开：逆前序遍历
+我们发现前序遍历时，要设置的right指针是之后要遍历到的节点，无法获得。
+但是，我们可以反着来，即由123456的遍历顺序变为654321，这样就可以“记住之后要遍历的节点”：先遍历6，然后在遍历5的时候，就可以把之前记住的6设为5的right child！
+于是解法就是 逆前序遍历（根左右 -> 右左根）！（注意，和普通后序的 左右根 有所不同）。
 """
 class Solution1:
     def flatten(self, root: Optional[TreeNode]) -> None:
@@ -53,12 +55,12 @@ class Solution1:
                 return
             traverse(root.right)
             traverse(root.left)
-            nonlocal node
+            nonlocal prev
             root.left = None
-            root.right = node
-            node = root
-
-        node = None
+            root.right = prev
+            prev = root
+        
+        prev = None
         traverse(root)
 
 
