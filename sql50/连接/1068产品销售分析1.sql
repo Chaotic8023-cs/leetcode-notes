@@ -1,0 +1,10 @@
+/*
+直接 INNER JOIN 即可解决。
+*/
+SELECT
+    p.product_name,
+    s.year,
+    s.price
+FROM
+    Sales as s INNER JOIN Product as p
+    ON s.product_id = p.product_id
