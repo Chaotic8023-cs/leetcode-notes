@@ -6,22 +6,22 @@ from typing import *
 """
 class Solution:
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
-        def backtracking(start_idx, state, ans, candidates, target):
-            s = sum(state)
-            if s > target:  # 剪枝：当前sum大于target直接返回
+        def backtracking(state, start_idx, curr_sum, ans):
+            if curr_sum > target:
                 return
-            if s == target:
+            elif curr_sum == target:
                 ans.append(state[:])
                 return
             for i in range(start_idx, len(candidates)):
                 state.append(candidates[i])
-                backtracking(i, state, ans, candidates, target)  # 因为当前元素能无限复选，所以start_idx就不+1，即直接传i
+                curr_sum += candidates[i]
+                backtracking(state, i, curr_sum, ans)  # 因为当前元素能无限复选，所以start_idx就不+1，即直接传i
+                curr_sum -= candidates[i]
                 state.pop()
 
         ans = []
-        backtracking(0, [], ans, candidates, target)
-        return ans
-
+        backtracking([], 0, 0, ans)
+        return ans 
 
 
 
