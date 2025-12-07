@@ -12,39 +12,8 @@ from typing import *
      尾[ab, cd, efg]顶 -> 先pop并反转：gfe, dc, ba -> 整个反转：abcdefg
 """
 class Solution:
+    # stack统一存string，通过每个string的第一个char来区分int和string（不用isinstance！）
     def decodeString(self, s: str) -> str:
-        chars = set("abcdefghijklmnopqrstuvwxyz")
-        digits = set("0123456789")
-        stack = deque()
-        n = len(s)
-        i = 0
-        while i < n:
-            if s[i] in digits:  # 数字可能有多位，所以要加入整个数
-                start = i
-                while s[i] in digits:
-                    i += 1
-                stack.append(int(s[start:i]))
-                i += 1  # 跳过左括号[
-            elif s[i] in chars:  # 加入以当前字母为开头的整个子字母字符串
-                curr = ""
-                while i < n and s[i] in chars:
-                    curr += s[i]
-                    i += 1
-                stack.append(curr)
-            else:  # s[i] == ']'：遇到右括号]
-                curr = ""
-                while isinstance(stack[-1], str):
-                    curr += stack.pop()[::-1]  # 注意顺序
-                k = stack.pop()
-                stack.append(k * curr[::-1])
-                i += 1
-        ans = ""
-        while stack:
-            ans += stack.pop()[::-1]  # 注意顺序
-        return ans[::-1]
-
-    # 记这个：stack统一存string，通过每个string的第一个char来区分int和string（不用isinstance！）
-    def decodeString1(self, s: str) -> str:
         n = len(s)
         stack = deque()
         i = 0
@@ -71,6 +40,38 @@ class Solution:
                 stack.append(k * curr[::-1])
                 i += 1
         ans = ""
+        while stack:
+            ans += stack.pop()[::-1]
+        return ans[::-1]
+    
+    # 双指针，用 j 代替 start
+    def decodeString1(self, s: str) -> str:
+        n = len(s)
+        stack = deque()
+        i = 0
+        while i < n:
+            if s[i].isdigit():
+                j = i + 1
+                while j < n and s[j].isdigit():
+                    j += 1
+                stack.append(s[i:j])
+                i = j
+            elif s[i].isalpha():
+                j = i + 1
+                while j < n and s[j].isalpha():
+                    j += 1
+                stack.append(s[i:j])
+                i = j
+            elif s[i] == '[':
+                i += 1
+            else:
+                curr = ''
+                while stack and stack[-1][0].isalpha():
+                    curr += stack.pop()[::-1]
+                k = int(stack.pop())
+                stack.append(k * curr[::-1])
+                i += 1
+        ans = ''
         while stack:
             ans += stack.pop()[::-1]
         return ans[::-1]
