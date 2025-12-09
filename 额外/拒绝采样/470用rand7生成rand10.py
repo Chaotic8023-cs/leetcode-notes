@@ -39,7 +39,7 @@ class Solution:
             # 使用rand2()生成n = 4位二进制数的每一位
             for _ in range(n):
                 # 左移一位，并加入新生成的二进制位
-                num = (num << 1) | self.rand2()
+                num = (num << 1) | self.rand2()  # 或：num += rand2() << i，i为第几位，即loop index
             # 若生成的数字在0~9之间，则映射到1~10
             if num < 10:
                 return num + 1
