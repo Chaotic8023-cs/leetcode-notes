@@ -18,4 +18,13 @@ class Solution:
             if t[s] == -1:
                 return False
        return True
+    
+    # 简单版：直接看在不在，然后看个数够不够
+    def canConstruct1(self, ransomNote: str, magazine: str) -> bool:
+        target = Counter(ransomNote)
+        mag = Counter(magazine)
+        for c in target:
+            if c not in mag or mag[c] < target[c]:
+                return False
+        return True
 
