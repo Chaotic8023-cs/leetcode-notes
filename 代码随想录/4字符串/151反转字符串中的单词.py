@@ -42,6 +42,37 @@ class Solution:
         # 此时arr中i之前的就是处理好的（所有单词，且中间填好空格）
         ans = ''.join(arr[:i])  # 先变成正常字符串
         return ' '.join(ans.split()[::-1])  # 再依据空格split变成单词，反转顺序，再添加空格
+    
+    # 该用双指针对每个word进行反转
+    def reverseWords2(self, s: str) -> str:
+        def reverse(s, i, j):
+            while i < j:
+                s[i], s[j] = s[j], s[i]
+                i, j = i + 1, j - 1
+        
+        s = list(s)
+        n = len(s)
+        i, j = 0, 0
+        while j < n:
+            if s[j] == ' ':
+                j += 1
+            else:
+                if i > 0:
+                    s[i] = ' '
+                    i += 1
+                while j < n and s[j] != ' ':
+                    s[i] = s[j]
+                    i, j = i + 1, j + 1
+        # 改用双指针对每个单词进行反转
+        s = s[:i]
+        i, j = 0, 0
+        while j < len(s):
+            while j < len(s) and s[j] != ' ':
+                j += 1
+            reverse(s, i, j - 1)
+            i = j + 1
+            j += 1
+        return ''.join(s)[::-1]
 
 
 if __name__ == '__main__':
