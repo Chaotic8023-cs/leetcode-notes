@@ -1,80 +1,11 @@
 from typing import *
 from collections import deque
 
-
 """
-用一个queue就能实现栈：既然两个q互相转移元素顺序不变，那么q自己也可以给自己转移：
-push：直接加入
-pop：循环(size-1)次，把除了末尾的元素都popleft出来再从尾部append进去，此时头部就是原来q的末尾元素，直接popleft即可
-top：调用pop，然后再加入到q中即可
+用两个queue实现stack：q_out临时中转用，即每次需要pop的时候，把q_in前面的元素临时存到q_out，这样q_in剩的就是“栈顶”了。
+优化：pop在临时转移后，可以交换q_in和q_out，这样方便操作，且语意一致。
 """
 class MyStack:
-
-    def __init__(self):
-        self.q = deque()
-
-    def push(self, x: int) -> None:
-        self.q.append(x)
-
-    def pop(self) -> int:
-        for _ in range(len(self.q) - 1):
-            self.q.append(self.q.popleft())
-        return self.q.popleft()
-
-    def top(self) -> int:
-        x = self.pop()
-        self.push(x)
-        return x
-        
-    def empty(self) -> bool:
-        return len(self.q) == 0
-
-
-"""
-用两个queue实现stack，这里和用两个stack实现queue不一样，因为就算把元素从一个queue移到另一个queue中，顺序还是不变的。
-所以这里q2完全相当于临时储存，或者说是q1的备份。
-下面是我自己写的，其实也可以有别的写法：
-
-push：存到q1和q2中有元素的那个
-pop：把有元素的那个q一直popleft到另一个q中，直到剩最后一个，刚好就是尾部，直接popleft返回。此时另一个q中顺序不变。
-top：直接调用pop，然后再加入回去，注意此时哪个q有元素就加回到哪个q中，因为pop会把元素全都加到另一个q中！
-"""
-class MyStack1:
-
-    def __init__(self):
-        self.q1 = deque()
-        self.q2 = deque()
-
-    def push(self, x: int) -> None:
-        if self.q1:
-            self.q1.append(x)
-        else:
-            self.q2.append(x)
-
-    def pop(self) -> int:
-        if self.q1:
-            while len(self.q1) > 1:
-                self.q2.append(self.q1.popleft())
-            return self.q1.popleft()
-        else:
-            while len(self.q2) > 1:
-                self.q1.append(self.q2.popleft())
-            return self.q2.popleft()
-
-    def top(self) -> int:
-        ans = self.pop()
-        if self.q1:
-            self.q1.append(ans)
-        else:
-            self.q2.append(ans)
-        return ans
-
-    def empty(self) -> bool:
-        return len(self.q1) == 0 and len(self.q2) == 0
-    
-
-# 优化版：明确命名区分in和out
-class MyStack2:
 
     def __init__(self):
         self.q_in = deque()  # q_in一直存所有的元素
@@ -96,4 +27,81 @@ class MyStack2:
     
     def empty(self) -> bool:
         return len(self.q_in) == 0 and len(self.q_out) == 0
+    
+
+"""
+用一个queue就能实现栈：既然两个q互相转移元素顺序不变，那么q自己也可以给自己转移：
+push：直接加入
+pop：循环(size-1)次，把除了末尾的元素都popleft出来再从尾部append进去，此时头部就是原来q的末尾元素，直接popleft即可
+top：调用pop，然后再加入到q中即可
+
+复杂度：
+push: O(1)
+pop: O(n)（把前 n-1 个元素旋到队尾）
+top: 通过 pop()+push() 实现，因此也是 O(n)
+empty: O(1)
+"""
+class MyStack1:
+
+    def __init__(self):
+        self.q = deque()
+
+    def push(self, x: int) -> None:
+        self.q.append(x)
+
+    def pop(self) -> int:
+        for _ in range(len(self.q) - 1):
+            self.q.append(self.q.popleft())
+        return self.q.popleft()
+
+    def top(self) -> int:
+        x = self.pop()
+        self.push(x)
+        return x
+        
+    def empty(self) -> bool:
+        return len(self.q) == 0
+
+"""
+常用变种：在push的时候就进行旋转，这样pop和top就是O(1)，即将pop和top的复杂度转到了push，一种经典的权衡。
+复杂度：
+push: O(n)
+pop: O(1)（直接 popleft()）
+top: O(1)（直接看队首元素）
+empty: O(1)
+
+为什么每次push时旋转不会有问题？
+因为保证了invariant：队列的队首始终是当前栈顶（最新 pushed 的元素）。
+例子：push 1、2、3
+1.
+    - push后：[1]
+    - 旋转后：[1]
+2.
+    - push后：[1, 2]
+    - 旋转后：[2, 1]
+3.
+    - push后：[2, 1, 3]
+    - 旋转后：[3, 2, 1]
+可以发现，队列内始终保证了元素顺序是“栈头”到“栈底”！
+"""
+class MyStack2:
+    def __init__(self):
+        self.q = deque()
+
+    def push(self, x: int) -> None:
+        self.q.append(x)
+        # 每次push时就旋转
+        for _ in range(len(self.q) - 1):
+            self.q.append(self.q.popleft())
+
+    def pop(self) -> int:
+        # 每次push保证了头元素就是“栈顶”，所以可以直接popleft
+        return self.q.popleft()
+
+    def top(self) -> int:
+        return self.q[0]  # 访问q[0]是队列的top操作，合理
+
+    def empty(self) -> bool:
+        return not self.q
+
 
