@@ -14,6 +14,7 @@ class Solution:
                 stack.append(w)
             else:  # if stack and stack[-1] == w
                 stack.pop()
+        # 这里其实可以直接 return ''.join(stack)
         ans = ""
         while stack:
             ans += stack.pop()
