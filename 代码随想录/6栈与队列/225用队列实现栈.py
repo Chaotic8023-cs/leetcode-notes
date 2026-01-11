@@ -22,10 +22,10 @@ class MyStack:
         return self.q.popleft()
 
     def top(self) -> int:
-        ans = self.pop()
-        self.q.append(ans)
-        return ans
-
+        x = self.pop()
+        self.push(x)
+        return x
+        
     def empty(self) -> bool:
         return len(self.q) == 0
 
