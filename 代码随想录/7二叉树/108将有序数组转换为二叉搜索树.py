@@ -26,16 +26,16 @@ class Solution:
     双指针版
     """
     def sortedArrayToBST1(self, nums: List[int]) -> Optional[TreeNode]:
-        def traverse(nums, left, right):  # 左闭右开
+        def makeBST(nums, left, right):  # 左闭右开
             if left == right:
                 return None
             mid = (left + right) >> 1
             root = TreeNode(nums[mid])
-            root.left = traverse(nums, left, mid)
-            root.right = traverse(nums, mid + 1, right)
+            root.left = makeBST(nums, left, mid)
+            root.right = makeBST(nums, mid + 1, right)
             return root
 
-        return traverse(nums, 0, len(nums))
+        return makeBST(nums, 0, len(nums))
 
 
 
