@@ -30,4 +30,20 @@ class Solution:
         ans = []
         traverse(root, 0, targetSum, [], ans)
         return ans
+    
+    # 另一种写法，s和path每次都直接更新
+    def pathSum1(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:
+        def traverse(root, s, path, ans):
+            if root is None:
+                return
+            s += root.val
+            path += [root.val]
+            traverse(root.left, s, path, ans)
+            traverse(root.right, s, path, ans)
+            if root.left is None and root.right is None and s == targetSum:
+                ans.append(path[:])
+            path.pop()  # 由于path是mutable的，所以需要pop；而s是local变量，不需要再减一次
+        ans = []
+        traverse(root, 0, [], ans)
+        return ans
 
