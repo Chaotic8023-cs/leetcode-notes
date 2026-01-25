@@ -1,4 +1,5 @@
 from typing import *
+from collections import deque
 
 
 # Definition for a binary tree node.
@@ -94,6 +95,35 @@ class Solution1:
         ans = []
         traverse(root)
         return ans
+    
+# 用迭代中序遍历做
+class Solution2:
+    def findMode(self, root: Optional[TreeNode]) -> List[int]:
+        v, cnt = -1, 0
+        curr_max_cnt = 0
+        modes = set()  # 用set，这样就不用记录上一个数了
+        stack = deque()
+        curr = root
+        while stack or curr:
+            while curr:
+                stack.append(curr)
+                curr = curr.left
+            curr = stack.pop()
+            # --------------------
+            # 先更新 数（v）和 cnt
+            if curr.val == v:
+                cnt += 1
+            else:
+                v, cnt = curr.val, 1
+            # 再根据 cnt 更新众数（ans）
+            if cnt > curr_max_cnt:
+                curr_max_cnt = cnt
+                modes = {v}
+            elif cnt == curr_max_cnt:
+                modes.add(v)  # 由于是set，不用看是否已经加入了，直接add即可
+            # --------------------
+            curr = curr.right
+        return list(modes)
 
 
 if __name__ == '__main__':
