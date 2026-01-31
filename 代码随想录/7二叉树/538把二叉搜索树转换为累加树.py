@@ -1,4 +1,5 @@
 from typing import *
+from collections import deque
 
 
 # Definition for a binary tree node.
@@ -42,6 +43,26 @@ class Solution:
 
         prev = 0
         traverse(root)
+        return root
+    
+class Solution1:
+    """
+    迭代逆中序遍历法:
+    普通中序遍历是左中右，由于我们遍历的顺序想按节点值从大到小，所以反过来，右中左。
+    放到迭代中序遍历中则是将对应地方都反过来即可。这样维护一个全局的curr_sum就很自然了。
+    """
+    def convertBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        curr = root
+        stack = deque()
+        curr_sum = 0  # 全局 当前累加值
+        while stack or curr:
+            while curr:
+                stack.append(curr)
+                curr = curr.right  # 反过来
+            curr = stack.pop()
+            curr.val += curr_sum
+            curr_sum = curr.val
+            curr = curr.left  # 反过来
         return root
 
 
