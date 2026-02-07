@@ -10,11 +10,10 @@ class Solution:
             if not row[i][v - 1] and not col[j][v - 1] and not subr[i // 3][j // 3][v - 1]:  # 如果v没用过
                 board[i][j] = str(v)
                 row[i][v - 1], col[j][v - 1], subr[i // 3][j // 3][v - 1] = True, True, True
-                ans = self.backtracking(board, row, col, subr, spaces, idx + 1)
-                if ans:
+                if self.backtracking(board, row, col, subr, spaces, idx + 1):
                     return True
-                board[i][j] = "."  # 放回以回溯
                 row[i][v - 1], col[j][v - 1], subr[i // 3][j // 3][v - 1] = False, False, False
+                board[i][j] = "."  # 放回以回溯
 
     def solveSudoku(self, board: List[List[str]]) -> None:
         # 3个数组用来记录每行/每列/每个小块中对应的数字有没有被使用，用的是0-based index

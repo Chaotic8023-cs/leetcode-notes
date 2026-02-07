@@ -4,23 +4,26 @@ from typing import *
 class Solution:
     """
     回溯：就是组合加了一个目标和的条件，start_idx版本，记住这个简洁的即可
+    也整一个candidates数组，和其他组合总和一致，方便记
     """
     def combinationSum3(self, k: int, n: int) -> List[List[int]]:
-        def backtracking(start_idx, curr_state, total, n, k, ans):
-            if len(curr_state) > k or total > n:  # 剪枝
-                return
-            if len(curr_state) == k and total == n:
-                ans.append(curr_state[:])
-                return
-            for i in range(start_idx, 9):
-                curr_state.append(i + 1)
-                total += i + 1
-                backtracking(i + 1, curr_state, total, n, k, ans)  # 下次从i + 1开始，因为是组合不能重复！
-                total -= i + 1
-                curr_state.pop()
+        candidates = [i + 1 for i in range(9)]
 
+        def backtracking(state, start_idx, s, ans):
+            if len(state) > k or s > n:
+                return
+            elif len(state) == k and s == n:
+                ans.append(state[:])
+                return
+            for i in range(start_idx, len(candidates)):
+                state.append(candidates[i])
+                s += candidates[i]
+                backtracking(state, i + 1, s, ans)
+                s -= candidates[i]
+                state.pop()
+        
         ans = []
-        backtracking(0, [], 0, n, k, ans)
+        backtracking([], 0, 0, ans)
         return ans
 
 

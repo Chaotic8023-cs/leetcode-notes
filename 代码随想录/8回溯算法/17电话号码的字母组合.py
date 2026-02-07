@@ -6,18 +6,6 @@ from typing import *
 """
 class Solution:
     def letterCombinations(self, digits: str) -> List[str]:
-        def backtracking(idx, state, ans, digits, mapping):
-            if idx == len(digits):
-                ans.append(''.join(state))
-                return
-            for c in mapping[int(digits[idx])]:
-                state.append(c)
-                backtracking(idx + 1, state, ans, digits, mapping)
-                state.pop()
-
-        ans = []
-        if len(digits) == 0:
-            return ans
         mapping = {
             2: list("abc"),
             3: list("def"),
@@ -28,7 +16,19 @@ class Solution:
             8: list("tuv"),
             9: list("wxyz")
         }
-        backtracking(0, [], ans, digits, mapping)
+        n = len(digits)
+
+        def backtracking(state, i, ans):
+            if i >= n:
+                ans.append(''.join(state))
+                return
+            for c in mapping[int(digits[i])]:
+                state.append(c)
+                backtracking(state, i + 1, ans)
+                state.pop()
+        
+        ans = []
+        backtracking([], 0, ans)
         return ans
 
 if __name__ == '__main__':
