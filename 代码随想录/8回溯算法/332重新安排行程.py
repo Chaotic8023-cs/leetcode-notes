@@ -10,7 +10,7 @@ class Solution:
     是想找字典顺序最小的那个欧拉路径，所以先sort了一下，且删除不加回。如果想找全部欧拉路径，则用经典递归（有加回的），找到一个更新一次ans。
     """
     def dfs(self, start, tickets, ans):
-        while start in tickets and len(tickets[start]) > 0:  # 从当前start出发有地方可以到达
+        while tickets[start]:  # 从当前start出发有地方可以到达
             dest = tickets[start][0]
             tickets[start].pop(0)  # 删除不加回
             self.dfs(dest, tickets, ans)
