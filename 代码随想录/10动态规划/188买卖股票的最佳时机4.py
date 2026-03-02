@@ -15,12 +15,8 @@ class Solution:
         n = len(prices)
         dp = [[0] * (2 * k + 1) for _ in range(n)]
         # 初始化（奇数为持有状态，偶数为不持有状态）
-        dp[0][0] = 0
-        for j in range(1, 2 * k + 1):
-            if j % 2 == 1:
-                dp[0][j] = -prices[0]
-            else:
-                dp[0][j] = 0
+        for j in range(1, 2 * k + 1, 2):
+            dp[0][j] = -prices[0]
         # 遍历
         for i in range(1, n):
             for j in range(1, 2 * k + 1, 2):
