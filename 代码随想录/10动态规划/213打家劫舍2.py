@@ -28,7 +28,7 @@ class Solution:
         return max(dp1[-1], dp2[-1])
 
 
-# 
+# 记这个，方便
 class Solution1:
     def rob(self, nums: List[int]) -> int:
         n = len(nums)
