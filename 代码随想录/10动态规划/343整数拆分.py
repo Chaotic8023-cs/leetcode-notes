@@ -17,7 +17,7 @@ class Solution:
         dp = [0] * (n + 1)
         dp[2] = 1  # 初始化：拆分2的最大乘积为1，即dp[2] = 1（dp[1]无意义，因为要拆分成>=2个数之和，1不能拆成两个）
         for i in range(3, n + 1):  # 从3开始拆分
-            for j in range(1, i):
+            for j in range(1, i):  # 因为对称性，这里遍历到 i // 2 + 1 其实就行！
                 # 1. 直接拆成两个：j * (i - j)，或拆成j和(i - j)的拆分（即dp[i - j]）
                 dp[i] = max(dp[i], j * (i - j), j * dp[i - j])  # 注意，max中要有dp[i]，因为dp[i]一直在更新！
                 # 因为是对称的，所以写成 dp[i] = max(dp[i], j * (i - j), dp[j] * (i - j)) 也可以！即拆j不拆(i - j) 与 不拆j拆(i - j)是等效的！
