@@ -22,6 +22,20 @@ class Solution:
             ans += extend(s, i, i, n)  # 以一个字母s[i]为中心，作为起点往两边扩展
             ans += extend(s, i, i + 1, n)  # 以两个字母s[i]和s[i + 1]为中心，作为起点往两边扩展
         return ans
+    
+    # extend的简单写法
+    def countSubstrings1(self, s: str) -> int:
+        def extend(i, j):
+            nonlocal ans
+            while i >= 0 and j < len(s) and s[i] == s[j]:
+                ans += 1
+                i, j = i - 1, j + 1
+        
+        ans = 0
+        for i in range(len(s)):
+            extend(i, i)
+            extend(i, i + 1)
+        return ans
 
     """
     1. dp数组下标含义：这题和前面的序列题都不一样，dp[i][j]表示子串[i,j]（左闭右闭）是否为回文，其中j >= i
