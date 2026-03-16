@@ -19,6 +19,23 @@ class Solution:
                         if next_x < 0 or next_x >= m or next_y < 0 or next_y >= n or grid[next_x][next_y] == 0:  # 越界 or 0
                             ans += 1
         return ans
+    
+    # 另外一种if写法
+    def islandPerimeter1(self, grid: List[List[int]]) -> int:
+        m, n = len(grid), len(grid[0])
+        dirs = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+        ans = 0
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 1:
+                    for dx, dy in dirs:
+                        nx, ny = i + dx, j + dy
+                        # 考虑不加的情况，即旁边一格是岛屿，此时不算周长，其余情况都算周长。这样写条件更简单！
+                        if 0 <= nx < m and 0 <= ny < n and grid[nx][ny] == 1:
+                            continue
+                        else:
+                            ans += 1
+        return ans
 
 
 
