@@ -42,6 +42,32 @@ class Solution:
                 contribution_count -= 1
                 i += 1
         return ans
+    
+    """
+    按照通用滑窗模版（求最小）做的，记这个
+    """
+    def minWindow(self, s: str, t: str) -> str:
+        m, n = len(s), len(t)
+        target_cnt = Counter(t)
+        curr_cnt = Counter()
+        contribution_cnt = 0
+        min_len, ans = inf, ""
+        i = 0
+        for j in range(m):
+            # 每次右端点j先+1
+            if s[j] in target_cnt and curr_cnt[s[j]] < target_cnt[s[j]]:
+                contribution_cnt += 1
+            curr_cnt[s[j]] += 1
+            # while当前窗口合法，则一直更新ans
+            while contribution_cnt == n:
+                if j - i + 1 < min_len:
+                    min_len = j - i + 1
+                    ans = s[i:j + 1]
+                curr_cnt[s[i]] -= 1
+                if s[i] in target_cnt and curr_cnt[s[i]] < target_cnt[s[i]]:
+                    contribution_cnt -= 1
+                i += 1
+        return ans
 
 
 if __name__ == '__main__':

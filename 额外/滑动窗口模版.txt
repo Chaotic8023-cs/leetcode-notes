@@ -1,0 +1,19 @@
+经典滑窗模版：
+
+1. 求最长窗口：例如 #3 无重复字符的最长字串
+
+for r in range(n):
+    add(s[r])
+    while 窗口不合法:
+        remove(s[l])
+        l += 1
+    更新最长答案
+
+2. 求最短窗口：例如 #76 最小覆盖字串
+
+for r in range(n):
+    add(s[r])
+    while 窗口已经满足要求:
+        更新最短答案
+        remove(s[l])
+        l += 1
