@@ -39,6 +39,22 @@ class Solution:
                 i += 1
             j += 1
         return ans if ans < inf else 0
+    
+    """
+    套滑窗模版，记这个
+    """
+    def minSubArrayLen2(self, target: int, nums: List[int]) -> int:
+        n = len(nums)
+        ans = inf
+        curr_sum = 0
+        i = 0
+        for j in range(n):
+            curr_sum += nums[j]
+            while curr_sum >= target:
+                ans = min(ans, j - i + 1)
+                curr_sum -= nums[i]
+                i += 1
+        return ans if ans < inf else 0
 
 
 if __name__ == '__main__':
