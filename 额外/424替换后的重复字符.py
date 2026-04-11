@@ -36,16 +36,8 @@ class Solution:
     优化版（记这个）：
     naive版中每次求max_cnt太慢。我们显式维护max_cnt，并将滑窗改为更通用、合适的方式：
     每次右端点j+=1，接着更新max_cnt。然后只要不符合条件，一直右移左端点i直到当前窗口满足条件，更新ans。
-
-    经典滑窗模版：
-    for r in range(n):
-        1. 先把 s[r] 纳入窗口
-
-        2. 如果窗口不合法：
-            不断移动左端点 l
-            直到窗口重新合法
-
-        3. 此时窗口合法，更新答案
+    注意：max_cnt其实不用维护窗口中的精确max_cnt，而维护一个“历史累积”max_cnt，即
+    当前为止见过的最大cnt即可。这里证明逻辑有点复杂，可以不想了...
     """
     def characterReplacement(self, s: str, k: int) -> int:
         n = len(s)
