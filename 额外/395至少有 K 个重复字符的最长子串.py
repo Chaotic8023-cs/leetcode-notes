@@ -13,8 +13,8 @@ class Solution:
     def longestSubstring(self, s: str, k: int) -> int:
         if not s:  # base case
             return 0
-        for c in set(s):
-            if s.count(c) < k:  # 找到不合法字符（即总数都小于k）
+        for c, cnt in Counter(s).items():
+            if cnt < k:  # 找到不合法字符（即总数都小于k）
                 # 对当前合法的子段递归计算
                 return max(self.longestSubstring(sub, k) for sub in s.split(c))
         return len(s)
