@@ -41,13 +41,11 @@ class Solution1:
         n = len(nums)
         ans = []
         for i in range(n):
-            # 因为可能负号标记，所以使用绝对值
-            x = abs(nums[i])
-            # 座位已经被占，说明当前数重复
-            if nums[x - 1] < 0:
-                ans.append(x)
-            # 标记x对应的座位被占
-            nums[x - 1] *= -1
+            v = abs(nums[i])  # 因为可能负号标记，所以使用绝对值
+            if nums[v - 1] > 0:  # 标记v应的座位被占
+                nums[v - 1] *= -1
+            else:  # 座位已经被占，说明当前数重复
+                ans.append(v)  # 注，当前位置可能被标记了，所以要拿abs的！
         return ans
 
 
