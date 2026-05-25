@@ -73,41 +73,22 @@ class Solution:
 
 
 """
-自己写的纯模拟，不用看。　
+简化版
 """
-class Solution1:
+class Solution:
     def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
-        # 普通反转链表，但是不光返回反转后的头，还返回反转后的尾（原来的头）
-        def reverse(head):
-            original_head = head  # 反转后的尾，即原来的头
-            prev, curr = None, head
-            while curr:
-                temp = curr.next
-                curr.next = prev
-                prev, curr = curr, temp
-            return prev, original_head
-
-        # left == right即指向同一个节点，不需要反转，直接返回
-        if left == right:
-            return head
-        # 找到prev和start，即要反转的前一个节点（prev）和要反转的开头节点（start）
-        prev, start = None, head
+        # 找到起始点
+        dummy = ListNode(next=head)
+        prev, curr = dummy, head
         for _ in range(left - 1):
-            prev = start
-            start = start.next
-        # 从start开始往后遍历找到要反转的末尾节点（end）
-        end = start
-        for _ in range(right - left):
-            end = end.next
-        # 反转前保存end后面的尾巴（tail）
-        tail = end.next
-        end.next = None
-        # 使用reverse进行反转，得到反转后的头和尾
-        new_start, new_end = reverse(start)
-        # 如果prev不是None，即left不是head的话，将原来的前面的节点尾巴（prev）与反转后的头相接
-        if prev:
-            prev.next = new_start
-        # 将反转后的尾巴和原来的尾部节点相接
-        new_end.next = tail
-        # 最后如果left不是head（即开始反转的地方不是原来的head）就返回原来的head，否则返回反转后的头部
-        return head if prev else new_start
+            prev, curr = prev.next, curr.next
+        # 存一下要反转部分的前一个节点（prev）和反转后变成tail的curr指针
+        i, j = prev, curr
+        for _ in range(right - left + 1):
+            temp = curr.next
+            curr.next = prev
+            prev, curr = curr, temp
+        # 拼接
+        i.next = prev
+        j.next = curr
+        return dummy.next
