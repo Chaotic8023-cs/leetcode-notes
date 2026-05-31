@@ -67,6 +67,22 @@ class Solution:
                 dp[i][diff] = max(dp[i][diff], dp[j][diff] + 1)  # 其实因为遍历j时每次diff都不一样，所以dp[i][diff]只会被更新一次，所以这里直接写成 dp[i][diff] = dp[j][diff] + 1 也可以！
                 ans = max(ans, dp[i][diff])
         return ans
+    
+    """
+    使用普通字典
+    """
+    def longestArithSeqLength2(self, nums: List[int]) -> int:
+        n = len(nums)
+        dp = [{} for _ in range(n)]
+        ans = 0
+        for i in range(1, n):
+            for j in range(i - 1, -1, -1):
+                diff = nums[i] - nums[j]
+                # 优化点：dp[i][diff]只更新一次，需要保证第一次更新就是最优的，所以j就得是最靠右的，所以j倒序遍历
+                if diff not in dp[i]:
+                    dp[i][diff] = dp[j].get(diff, 1) + 1
+                    ans = max(ans, dp[i][diff])
+        return ans
 
 
 if __name__ == '__main__':
