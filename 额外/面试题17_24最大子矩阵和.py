@@ -31,11 +31,9 @@ class Solution:
         ans = [0, 0, 0, 0]  # top, bottom, left, right
         # 枚举top和bottom
         for top in range(m):
-            for bottom in range(top, m):
+            for bottom in range(top, m):  # 当top == bottom的时候，即只取一行
                 # 把[top, bottom]之间的行按列压缩成一个一维数组，即col_sum
-                arr = [0] * n
-                for j in range(n):
-                    arr[j] = psum[bottom + 1][j] - psum[top][j]
+                arr = [psum[bottom + 1][j] - psum[top][j] for j in range(n)]
                 # 对arr跑kadane求出最大子数组和，并记录下标
                 curr_sum, left = 0, 0
                 for i in range(n):  # i是right，需要记录的是left
