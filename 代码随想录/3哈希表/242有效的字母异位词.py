@@ -8,12 +8,16 @@ class Solution:
     def isAnagram(self, s: str, t: str) -> bool:
         return Counter(s) == Counter(t)  # == compare by value
 
-    # 用字典
+    # 用字典：两个str长度一样的情况下，只用一个哈希表就行
     def isAnagram1(self, s: str, t: str) -> bool:
-        ht_s, ht_t = {}, {}
-        for cs in s:
-            ht_s[cs] = ht_s.get(cs, 0) + 1
-        for ct in t:
-            ht_t[ct] = ht_t.get(ct, 0) + 1
-        return ht_s == ht_t
+        if len(s) != len(t):
+            return False
+        mapping = {}
+        for c in s:
+            mapping[c] = mapping.get(c, 0) + 1
+        for c in t:
+            mapping[c] = mapping.get(c, 0) - 1
+            if mapping[c] < 0:
+                return False
+        return True
 
