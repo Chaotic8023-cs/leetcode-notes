@@ -20,5 +20,16 @@ class Solution:
 
     def intersection1(self, nums1: List[int], nums2: List[int]) -> List[int]:
         return list(set(nums1) & set(nums2))  # 两个set的交集
+    
+    # 手动实现set交集
+    def intersection2(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        s1, s2 = set(nums1), set(nums2)
+        if len(nums2) < len(nums1):
+            s1, s2 = s2, s1
+        ans = []
+        for x in s1:
+            if x in s2:
+                ans.append(x)
+        return ans
 
 
