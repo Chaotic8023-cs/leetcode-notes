@@ -23,6 +23,28 @@ class Solution:
         else:  # 否则，反转前k个
             reverse(i, i + k - 1)
         return ''.join(s)
+    
+    # 也可以写成一个while循环
+    def reverseStr1(self, s: str, k: int) -> str:
+        def reverse(i, j):
+            while i < j:
+                s[i], s[j] = s[j], s[i]
+                i, j = i + 1, j - 1
+        
+        s = list(s)
+        n = len(s)
+        i = 0
+        while i < n:
+            if i + 2 * k - 1 < n:
+                reverse(i, i + k - 1)
+                i += 2 * k
+            elif i + k - 1 < n:
+                reverse(i, i + k - 1)
+                break
+            else:
+                reverse(i, n - 1)
+                break
+        return ''.join(s)
 
 
 
