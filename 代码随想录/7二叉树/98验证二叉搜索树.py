@@ -1,4 +1,6 @@
 from typing import *
+from collections import deque
+from math import inf
 
 
 # Definition for a binary tree node.
@@ -45,6 +47,22 @@ class Solution:
 
         prev = -float('inf')
         return inorder(root)
+    
+    # 迭代中序遍历
+    def isValidBST2(self, root: Optional[TreeNode]) -> bool:
+        stack = deque()
+        curr = root
+        prev = -inf
+        while curr or stack:
+            while curr:
+                stack.append(curr)
+                curr = curr.left
+            curr = stack.pop()
+            if curr.val <= prev:
+                return False
+            prev = curr.val
+            curr = curr.right
+        return True
 
 
 
