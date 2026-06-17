@@ -36,6 +36,21 @@ class Solution:
             return root
 
         return makeBST(nums, 0, len(nums))
+    
+    """
+    双指针版（左右都是闭区间）
+    """
+    def sortedArrayToBST2(self, nums: List[int]) -> Optional[TreeNode]:
+        def buildTree(left, right):
+            if left > right:  # 闭区间时等于说明还剩一个，所以大于的时候才表示没有
+                return None
+            mid = (left + right) >> 1
+            root = TreeNode(nums[mid])
+            root.left = buildTree(left, mid - 1)
+            root.right = buildTree(mid + 1, right)
+            return root
+
+        return buildTree(0, len(nums) - 1)
 
 
 
