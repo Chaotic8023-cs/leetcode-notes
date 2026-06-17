@@ -24,6 +24,7 @@ class Solution:
             l = traverse(root.left)
             r = traverse(root.right)
             # 当有一侧没有子树时，选择有子树的另一侧
+            # 也可以写成：if l == 0 or r == 0: return (l or r) + 1
             if l == 0:
                 return r + 1
             elif r == 0:
