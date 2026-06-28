@@ -11,8 +11,7 @@ class Solution:
     """
     def dfs(self, start, tickets, ans):
         while tickets[start]:  # 从当前start出发有地方可以到达
-            dest = tickets[start][0]
-            tickets[start].pop(0)  # 删除不加回
+            dest = tickets[start].pop(0)  # 删除不加回
             self.dfs(dest, tickets, ans)
         ans.append(start)  # 在循环后加入start
 
